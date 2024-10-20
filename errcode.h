@@ -7,5 +7,5 @@ typedef enum {
   ERR_RETRY = -1,
 } errcode_t;
 
-char *codetomsg(int);
+const char *codetomsg(int);
 void panic(int);

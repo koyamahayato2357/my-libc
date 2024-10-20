@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char *codetomsg(int code) {
+const char *codetomsg(int code) {
   switch (code) {
   case ERR_SUCCESS:
     return "success";
