@@ -1,4 +1,5 @@
 #pragma once
+#include "errcode.h"
 
 #define breakx                                                                 \
   ({                                                                           \
@@ -21,5 +22,10 @@
 #define unreachable                                                            \
   ({                                                                           \
     longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], 1);                          \
+    0;                                                                         \
+  })
+#define panicx(e)                                                              \
+  ({                                                                           \
+    panic(e);                                                                  \
     0;                                                                         \
   })
