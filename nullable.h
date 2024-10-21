@@ -23,12 +23,6 @@
   })
 #define unwrap(o) unwrap_or(o, unreachable)
 #define unwrap_unsafe(o) ((o).val)
-#define map_option(o, f)                                                       \
-  do                                                                           \
-    f(unwrap_or((o), breakx));                                                 \
-  while (0)
-#define and_then(o, f)                                                         \
-  ifx(isnull(o)) Null(__typeof__((o).val)) elsex f(unwrap_unsafe(o))
 
 DEF_OPTIONAL(char);
 DEF_OPTIONAL(int);
