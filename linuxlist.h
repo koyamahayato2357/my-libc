@@ -33,7 +33,7 @@ typedef struct LinuxList {
               elem->LINUXLIST_MEMBER.next != &(rt)->LINUXLIST_MEMBER) &&       \
          (elem = container_of(elem->LINUXLIST_MEMBER.next, __typeof__(*(rt)),  \
                               LINUXLIST_MEMBER)))
-#define append(l, v)                                                           \
+#define appendLinuxList(l, v)                                                  \
   do {                                                                         \
     __typeof__(l) new = malloc(sizeof(__typeof__(*(l))));                      \
     new->val = v;                                                              \
@@ -43,6 +43,14 @@ typedef struct LinuxList {
     new->LINUXLIST_MEMBER.prev->next = &new->LINUXLIST_MEMBER;                 \
   } while (0)
 #define insert(l, val) pass
+#define removeLinuxList(l)
+#define moveLinuxList(l, dir)                                                  \
+  ({                                                                           \
+    l = container_of((l)->LINUXLIST_MEMBER.dir, __typeof(*(l)),                \
+                     LINUXLIST_MEMBER);                                        \
+  })
+#define nextLinuxList(l) moveLinuxList(l, next)
+#define prevLinuxList(l) moveLinuxList(l, prev)
 #define deleteLinuxList(l)                                                     \
   do {                                                                         \
     LinuxList *cursor = (l)->LINUXLIST_MEMBER.next, *next;                     \
