@@ -7,6 +7,9 @@
       __attribute__((overloadable)) {                                          \
     return (Iter(T)){buf, len, 0};                                             \
   }                                                                            \
+  Iter(T) initIterWithVector(Vector(T) vec) __attribute__((overloadable)) {    \
+    return (Iter(T)){vec.buf, vec.len, 0};                                     \
+  }                                                                            \
   Option(T) next(Iter(T) * iter) __attribute__((overloadable)) {               \
     if (iter->len <= iter->i)                                                  \
       return Null(T);                                                          \
@@ -40,4 +43,13 @@ test(foreach) {
     expecteq(item, iter.buf[i++]);
   expecteq(iter.i, iter.len);
   expect(isnull(next(&iter)));
+}
+
+test(initwith_vector) {
+  Vector(char) vec = initVectorWithArray("This is sample text.");
+  Iter(char) iter = initIterWithVector(vec);
+  int i = 0;
+  foreach (iter, item)
+    expecteq(item, vec.buf[i++]);
+  deinitVector(vec);
 }
