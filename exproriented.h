@@ -29,3 +29,4 @@
     panic(e);                                                                  \
     0;                                                                         \
   })
+#define orelse ?:
