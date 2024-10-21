@@ -6,7 +6,7 @@
 
 #define foreach(iter, item)                                                    \
   for (auto item = iter.buf[iter.i]; iter.i < iter.len;                        \
-       iter.i++, item = iter.buf[iter.i])
+       item = iter.buf[++iter.i])
 
 #define initIterWithArray(buf)                                                 \
   _initIterWithArray(buf, sizeof(buf) / sizeof(buf[0]))
