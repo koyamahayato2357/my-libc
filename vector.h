@@ -7,7 +7,7 @@
 #define Vector(T) VECTOR_H_VECTOR##T
 #define initVector(T)                                                          \
   (Vector(T)) { DEFAULT_VECCAP, 0, malloc(sizeof(T) * DEFAULT_VECCAP) }
-#define arraytovec(a) _initVectorWithArray(a, sizeof(a));
+#define initVectorWithArray(a) _initVectorWithArray(a, sizeof(a));
 
 #define DEF_VEC(T)                                                             \
   typedef struct {                                                             \
@@ -24,3 +24,4 @@ DEF_VEC(int)
 DEF_VEC(char)
 DEF_VEC(size_t)
 DEF_VEC(double)
+DEF_VEC(str)

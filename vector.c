@@ -49,7 +49,7 @@ test(push) {
 }
 
 test(pop) {
-  Vector(char) vec = arraytovec("hello world");
+  Vector(char) vec = initVectorWithArray("hello world");
   expecteq(vec.len, strlen("hello world") + 1);
 
   expecteq(unwrap(pop(&vec)), 0);
