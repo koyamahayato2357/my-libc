@@ -43,15 +43,19 @@ extern int TESTING_H_fail;
     }                                                                          \
   while (0)
 #define expecteq(lhs, rhs)                                                     \
-  do {                                                                         \
+  do                                                                           \
     if (!_Generic((lhs),                                                       \
         double: double_eq(lhs, rhs),                                           \
         double complex: complex_eq(lhs, rhs),                                  \
         default: (lhs == rhs))) {                                              \
-      printf("Expected %s found %s at %s:%d", #lhs, #rhs, __FILE__, __LINE__); \
+      printf("Expected ");                                                     \
+      printany((lhs));                                                         \
+      printf(" found ");                                                       \
+      printany((rhs));                                                         \
+      printf(" at %s:%d", __FILE__, __LINE__);                                 \
       longjmp(jb, 1);                                                          \
     }                                                                          \
-  } while (0)
+  while (0)
 
 #define EPSILON 1e-5
 // Helper function to compare doubles with epsilon
