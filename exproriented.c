@@ -1,3 +1,16 @@
+/*
+ * Usage
+ * ----------------------------------------------------------------------------
+ * if expression         | puts(ifx(lhs == rhs) "equal" elsex "not equal");
+ * ----------------------------------------------------------------------------
+ * break expression      | p = next() orelse breakx;
+ * ----------------------------------------------------------------------------
+ * continue expression   | some_cond || continuex;
+ * ----------------------------------------------------------------------------
+ * return expression     | char *homedir = getenv("HOME") orelse returnx(-1);
+ * ----------------------------------------------------------------------------
+ */
+
 #include "exproriented.h"
 #include "testing.h"
 
