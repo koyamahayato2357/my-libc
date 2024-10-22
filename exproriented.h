@@ -17,7 +17,6 @@
     0                                                                          \
   })
 #define ifx(cond) (cond) ?
-#define elseifx(cond) : (cond) ?
 #define elsex :
 #define unreachable                                                            \
   ({                                                                           \
