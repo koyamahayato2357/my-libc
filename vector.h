@@ -1,4 +1,5 @@
 #pragma once
+#include "def.h"
 #include "nullable.h"
 #include <stdio.h>
 
@@ -6,13 +7,13 @@
 #define DEFAULT_VECCAP 32
 #define Vector(T) VECTOR_H_VECTOR##T
 #define initVector(T)                                                          \
-  (Vector(T)) { DEFAULT_VECCAP, 0, malloc(sizeof(T) * DEFAULT_VECCAP) }
+  (Vector(T)) { DEFAULT_VECCAP, 0, galloc(T, DEFAULT_VECCAP) }
 #define initVectorWithArray(a) _initVectorWithArray(a, sizeof(a));
 
 #define DEF_VEC(T)                                                             \
   typedef struct {                                                             \
-    int cap;                                                                   \
-    int len;                                                                   \
+    int cap /* unit: bytes */;                                                 \
+    int len /* unit: bytes */;                                                 \
     T *buf;                                                                    \
   } Vector(T);                                                                 \
   void push(Vector(T) *, T) __attribute__((overloadable));                     \
