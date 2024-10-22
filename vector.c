@@ -52,7 +52,7 @@ test(pop) {
   Vector(char) vec = initVectorWithArray("hello world");
   expecteq(vec.len, strlen("hello world") + 1);
 
-  expecteq(unwrap(pop(&vec)), 0);
+  expecteq(unwrap(pop(&vec)), '\0');
   expecteq(unwrap(pop(&vec)), 'd');
   expecteq(unwrap(pop(&vec)), 'l');
   expecteq(unwrap(pop(&vec)), 'r');
