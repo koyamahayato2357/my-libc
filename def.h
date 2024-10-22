@@ -20,4 +20,4 @@
 
 typedef char *str;
 
-void free4drop(void **);
+void free4drop(void *);
