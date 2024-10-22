@@ -3,8 +3,9 @@
 #include "testing.h"
 #include <stdlib.h>
 
-// <DANGER> Don't call
+// <!DANGER!> Don't call except drop
 void free4drop(void *pp) { free(*(void **)pp); }
+// <!DANGER!> Don't call except drop
 
 test(leak) { drop void *p = malloc(100); }
 
