@@ -75,5 +75,6 @@ bool complex_eq(double complex, double complex);
          size_t: "%zu",                                                        \
          double: "%lf",                                                        \
          char: "%c",                                                           \
+         char *: "%s",                                                         \
          default: "%p"),                                                       \
          x)
