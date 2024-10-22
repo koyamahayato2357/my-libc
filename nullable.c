@@ -5,6 +5,9 @@
 #define DEF_OPTIONFN(T)                                                        \
   Option(T) Some(T v) __attribute__((overloadable)) {                          \
     return (Option(T)){false, v};                                              \
+  }                                                                            \
+  Option(T) and_then(Option(T) o, T (*f)(T)) __attribute__((overloadable)) {   \
+    return ifx(isnull(o)) Null(T) elsex Some(f(unwrap_unsafe(o)));             \
   }
 
 DEF_OPTIONFN(char)
@@ -43,4 +46,13 @@ test(unwrap_unsafe) {
   expecteq(unwrap_unsafe(o), 99);
   o = Null(int);
   expecteq(unwrap_unsafe(o), Null(int).val);
+}
+
+int square(int x) { return x * x; }
+
+test(map) {
+  Option(int) o = Null(int);
+  expect(isnull(and_then(o, square)));
+  o = Some(10);
+  expecteq(unwrap(and_then(o, square)), 100);
 }
