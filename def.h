@@ -17,7 +17,10 @@
       panic(ERR_ALLOC_FAILED);                                                 \
     p;                                                                         \
   })
+#define lesser(a, b) ((a) > (b) ? (b) : (a))
+#define bigger(a, b) ((a) < (b) ? (b) : (a))
 
 typedef char *str;
 
 void free4drop(void *);
+void *rerealloc(size_t curn_byte, void *p, size_t newn_byte);
