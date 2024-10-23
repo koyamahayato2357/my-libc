@@ -36,7 +36,7 @@ typedef struct LinuxList {
 #define appendLinuxList(l, v)                                                  \
   do {                                                                         \
     __typeof__(l) new = malloc(sizeof(__typeof__(*(l))));                      \
-    new->val = v;                                                              \
+    new->val = (__typeof__(new->val))v;                                        \
     new->LINUXLIST_MEMBER.prev = (l)->LINUXLIST_MEMBER.prev;                   \
     (l)->LINUXLIST_MEMBER.prev = &new->LINUXLIST_MEMBER;                       \
     new->LINUXLIST_MEMBER.next = &(l)->LINUXLIST_MEMBER;                       \
