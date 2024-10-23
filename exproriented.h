@@ -20,7 +20,7 @@
 #define elsex :
 #define unreachable                                                            \
   ({                                                                           \
-    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], 1);                          \
+    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
     0;                                                                         \
   })
 #define panicx(e)                                                              \
