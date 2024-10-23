@@ -51,7 +51,6 @@ void _throw() { throw(1); }
 void _nothrow() {}
 
 test(exception) {
-
   try {
     _throw();
     testing_unreachable;
