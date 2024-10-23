@@ -75,10 +75,11 @@ test(pop) {
   deinitVector(vec);
 }
 
-test(expend) {
+test(expand_shrink) {
   Vector(char) vec = initVector(char);
   for (int i = 0; i < 100; i++)
     push(&vec, i);
+  expecteq(vec.cap, 128);
   for (int i = 0; i < 90; i++)
     pop_raw(&vec);
   shrink(&vec);
