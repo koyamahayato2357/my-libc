@@ -45,7 +45,10 @@ test(unwrap_unsafe) {
   Option(int) o = Some(99);
   expecteq(unwrap_unsafe(o), 99);
   o = Null(int);
-  expecteq(unwrap_unsafe(o), Null(int).val);
+  // Undefined behaivior; might be false
+  // expecteq(unwrap_unsafe(Null(T)), Null(T).val);
+  o = Some(334);
+  expecteq(unwrap_unsafe(o), 334);
 }
 
 int square(int x) { return x * x; }
