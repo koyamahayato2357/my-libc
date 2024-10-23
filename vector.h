@@ -16,7 +16,11 @@
     int len /* unit: bytes */;                                                 \
     T *buf;                                                                    \
   } Vector(T);                                                                 \
+  bool expand(Vector(T) *) __attribute__((overloadable));                      \
+  void push_unsafe(Vector(T) *, T) __attribute__((overloadable));              \
   void push(Vector(T) *, T) __attribute__((overloadable));                     \
+  bool shrink(Vector(T) *) __attribute__((overloadable));                      \
+  Option(T) pop_raw(Vector(T) *) __attribute__((overloadable));                \
   Option(T) pop(Vector(T) *) __attribute__((overloadable));                    \
   Vector(T) _initVectorWithArray(T *, size_t) __attribute__((overloadable));   \
   void deinitVector(Vector(T)) __attribute__((overloadable));

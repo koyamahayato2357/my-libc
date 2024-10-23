@@ -3,19 +3,33 @@
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  __attribute__((overloadable)) void push(Vector(T) * vec, T v) {              \
-    if (vec->cap < vec->len + 1) {                                             \
-      vec->cap *= 2;                                                           \
-      char *ret = realloc(vec->buf, vec->cap);                                 \
-      if (ret == nullptr)                                                      \
-        return;                                                                \
-    }                                                                          \
+  __attribute__((overloadable)) bool expand(Vector(T) * vec) {                 \
+    if (vec->cap >= vec->len + 1)                                              \
+      return true;                                                             \
+    vec->cap *= 2;                                                             \
+    return (vec->buf = realloc(vec->buf, vec->cap)) != nullptr;                \
+  }                                                                            \
+  __attribute__((overloadable)) void push_unsafe(Vector(T) * vec, T v) {       \
     vec->buf[vec->len++] = v;                                                  \
   }                                                                            \
-  __attribute__((overloadable)) Option(T) pop(Vector(T) * vec) {               \
+  __attribute__((overloadable)) void push(Vector(T) * vec, T v) {              \
+    if (!expand(vec))                                                          \
+      return;                                                                  \
+    push_unsafe(vec, v);                                                       \
+  }                                                                            \
+  __attribute__((overloadable)) bool shrink(Vector(T) * vec) {                 \
+    if (vec->len * 4 > vec->cap)                                               \
+      return true;                                                             \
+    vec->cap /= 2;                                                             \
+    return (vec->buf = realloc(vec->buf, vec->cap)) != nullptr;                \
+  }                                                                            \
+  __attribute__((overloadable)) Option(T) pop_raw(Vector(T) * vec) {           \
     if (vec->len == 0)                                                         \
       return Null(T);                                                          \
     return Some(vec->buf[--(vec->len)]);                                       \
+  }                                                                            \
+  __attribute__((overloadable)) Option(T) pop(Vector(T) * vec) {               \
+    return ifx(!shrink(vec)) Null(T) elsex pop_raw(vec);                       \
   }                                                                            \
   __attribute__((overloadable)) Vector(T)                                      \
       _initVectorWithArray(T *a, size_t len) {                                 \
@@ -58,5 +72,16 @@ test(pop) {
   expecteq(unwrap(pop(&vec)), 'r');
   push(&vec, 'a');
   expecteq(unwrap(pop(&vec)), 'a');
+  deinitVector(vec);
+}
+
+test(expend) {
+  Vector(char) vec = initVector(char);
+  for (int i = 0; i < 100; i++)
+    push(&vec, i);
+  for (int i = 0; i < 90; i++)
+    pop_raw(&vec);
+  shrink(&vec);
+  expecteq(vec.cap, 64);
   deinitVector(vec);
 }
