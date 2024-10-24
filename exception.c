@@ -47,8 +47,8 @@ int EXCEPTION_H_nest;
 
 void EXCEPTION_H_cl(int **g) { (**g)--; }
 
-void _throw() { throw(1); }
-void _nothrow() {}
+static void _throw() { throw(1); }
+static void _nothrow() {}
 
 test(exception) {
   try {
