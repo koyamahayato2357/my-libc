@@ -1,27 +1,27 @@
 #include "vector.h"
+#include "def.h"
 #include "testing.h"
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  __attribute__((overloadable)) bool expand(Vector(T) * vec) {                 \
+  __attribute__((overloadable)) void expand(Vector(T) * vec) {                 \
     if (vec->cap >= vec->len + 1)                                              \
-      return true;                                                             \
+      return;                                                                  \
+    vec->buf = rerealloc(vec->cap, vec->buf, vec->cap * 2);                    \
     vec->cap *= 2;                                                             \
-    return (vec->buf = realloc(vec->buf, vec->cap)) != nullptr;                \
   }                                                                            \
   __attribute__((overloadable)) void push_unsafe(Vector(T) * vec, T v) {       \
     vec->buf[vec->len++] = v;                                                  \
   }                                                                            \
   __attribute__((overloadable)) void push(Vector(T) * vec, T v) {              \
-    if (!expand(vec))                                                          \
-      return;                                                                  \
+    expand(vec);                                                               \
     push_unsafe(vec, v);                                                       \
   }                                                                            \
-  __attribute__((overloadable)) bool shrink(Vector(T) * vec) {                 \
+  __attribute__((overloadable)) void shrink(Vector(T) * vec) {                 \
     if (vec->len * 4 > vec->cap)                                               \
-      return true;                                                             \
+      return;                                                                  \
+    vec->buf = rerealloc(vec->cap, vec->buf, vec->cap / 2);                    \
     vec->cap /= 2;                                                             \
-    return (vec->buf = realloc(vec->buf, vec->cap)) != nullptr;                \
   }                                                                            \
   __attribute__((overloadable)) Option(T) pop_raw(Vector(T) * vec) {           \
     if (vec->len == 0)                                                         \
@@ -29,7 +29,11 @@
     return Some(vec->buf[--(vec->len)]);                                       \
   }                                                                            \
   __attribute__((overloadable)) Option(T) pop(Vector(T) * vec) {               \
-    return ifx(!shrink(vec)) Null(T) elsex pop_raw(vec);                       \
+    shrink(vec);                                                               \
+    return pop_raw(vec);                                                       \
+  }                                                                            \
+  __attribute__((overloadable)) void resize(Vector(T) * vec, size_t n) {       \
+    vec->buf = rerealloc(vec->cap, vec->buf, n);                               \
   }                                                                            \
   __attribute__((overloadable)) Vector(T)                                      \
       _initVectorWithArray(T *a, size_t len) {                                 \
