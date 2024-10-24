@@ -53,7 +53,7 @@ test(unwrap_unsafe) {
 
 int square(int x) { return x * x; }
 
-test(map) {
+test(and_then) {
   Option(int) o = Null(int);
   expect(isnull(and_then(o, square)));
   o = Some(10);
