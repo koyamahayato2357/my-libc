@@ -44,8 +44,9 @@
     memcpy(buf, a, len);                                                       \
     return (Vector(T)){DEFAULT_VECCAP * blockn, len, buf};                     \
   }                                                                            \
-  __attribute__((overloadable)) void deinitVector(Vector(T) vec) {             \
-    free(vec.buf);                                                             \
+  __attribute__((overloadable)) void deinitVector(Vector(T) * vec) {           \
+    /* for drop */                                                             \
+    free(vec->buf);                                                            \
   }
 
 DEF_VECFN(int)
