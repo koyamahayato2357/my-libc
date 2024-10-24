@@ -3,3 +3,4 @@
 hid
 a.out
 compile_commands.json
+.clang-tidy
