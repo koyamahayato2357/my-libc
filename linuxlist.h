@@ -59,4 +59,5 @@ typedef struct LinuxList {
       free(container_of(cursor, __typeof__(*(l)), LINUXLIST_MEMBER));          \
       cursor = next;                                                           \
     }                                                                          \
+    free(container_of(cursor, __typeof__(*(l)), LINUXLIST_MEMBER));            \
   } while (0)
