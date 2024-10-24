@@ -51,5 +51,5 @@ test(initwith_vector) {
   int i = 0;
   foreach (iter, item)
     expecteq(item, vec.buf[i++]);
-  deinitVector(vec);
+  deinitVector(&vec);
 }

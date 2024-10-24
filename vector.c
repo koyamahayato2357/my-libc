@@ -64,7 +64,7 @@ test(push) {
   expecteq(vec.buf[1], 'b');
   expecteq(vec.buf[2], 'c');
   expecteq(vec.buf[3], 'd');
-  deinitVector(vec);
+  deinitVector(&vec);
 }
 
 test(pop) {
@@ -77,7 +77,7 @@ test(pop) {
   expecteq(unwrap(pop(&vec)), 'r');
   push(&vec, 'a');
   expecteq(unwrap(pop(&vec)), 'a');
-  deinitVector(vec);
+  deinitVector(&vec);
 }
 
 test(expand_shrink) {
@@ -89,5 +89,5 @@ test(expand_shrink) {
     pop_raw(&vec);
   shrink(&vec);
   expecteq(vec.cap, 64);
-  deinitVector(vec);
+  deinitVector(&vec);
 }

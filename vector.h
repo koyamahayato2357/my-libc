@@ -24,7 +24,7 @@
   Option(T) pop(Vector(T) *) __attribute__((overloadable));                    \
   void resize(Vector(T) *, size_t) __attribute__((overloadable));              \
   Vector(T) _initVectorWithArray(T *, size_t) __attribute__((overloadable));   \
-  void deinitVector(Vector(T)) __attribute__((overloadable));
+  void deinitVector(Vector(T)*) __attribute__((overloadable));
 
 DEF_VEC(int)
 DEF_VEC(char)
