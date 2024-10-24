@@ -18,6 +18,7 @@
   })
 #define ifx(cond) (cond) ?
 #define elsex :
+#undef unreachable // builtin macro
 #define unreachable                                                            \
   ({                                                                           \
     longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
