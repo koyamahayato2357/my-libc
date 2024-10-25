@@ -39,7 +39,7 @@
     size_t blockn = 1;                                                         \
     while (DEFAULT_VECCAP * blockn < len)                                      \
       blockn++;                                                                \
-    T *buf = malloc(sizeof(T) * DEFAULT_VECCAP * blockn);                      \
+    T *buf = galloc(T, DEFAULT_VECCAP * blockn);                               \
     memcpy(buf, a, len);                                                       \
     return (Vector(T)){DEFAULT_VECCAP * blockn, len, buf};                     \
   }                                                                            \
