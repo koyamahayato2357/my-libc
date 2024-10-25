@@ -1,5 +1,4 @@
 #include "vector.h"
-#include "def.h"
 #include "testing.h"
 #include <stdlib.h>
 
@@ -7,7 +6,7 @@
   __attribute__((overloadable)) void expand(Vector(T) * vec) {                 \
     if (vec->cap >= vec->len + 1)                                              \
       return;                                                                  \
-    vec->buf = rerealloc(vec->cap, vec->buf, vec->cap * 2);                    \
+    vec->buf = realloc(vec->buf, vec->cap * 2);                                \
     vec->cap *= 2;                                                             \
   }                                                                            \
   __attribute__((overloadable)) void push_unsafe(Vector(T) * vec, T v) {       \
@@ -20,7 +19,7 @@
   __attribute__((overloadable)) void shrink(Vector(T) * vec) {                 \
     if (vec->len * 4 > vec->cap)                                               \
       return;                                                                  \
-    vec->buf = rerealloc(vec->cap, vec->buf, vec->cap / 2);                    \
+    vec->buf = realloc(vec->buf, vec->cap / 2);                                \
     vec->cap /= 2;                                                             \
   }                                                                            \
   __attribute__((overloadable)) Option(T) pop_raw(Vector(T) * vec) {           \
@@ -33,7 +32,7 @@
     return pop_raw(vec);                                                       \
   }                                                                            \
   __attribute__((overloadable)) void resize(Vector(T) * vec, size_t n) {       \
-    vec->buf = rerealloc(vec->cap, vec->buf, n);                               \
+    vec->buf = realloc(vec->buf, n);                                           \
   }                                                                            \
   __attribute__((overloadable)) Vector(T)                                      \
       _initVectorWithArray(T *a, size_t len) {                                 \

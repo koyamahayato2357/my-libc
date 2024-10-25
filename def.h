@@ -1,7 +1,6 @@
 #pragma once
 #include "errcode.h"
 #include "exproriented.h"
-#include <stdlib.h>
 
 #define CAT(a, b) a##b
 
@@ -26,4 +25,3 @@
 typedef char *str;
 
 void free4drop(void *);
-void *rerealloc(size_t curn_byte, void *p, size_t newn_byte);

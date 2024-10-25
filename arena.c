@@ -1,6 +1,7 @@
 #include "arena.h"
 #include "def.h"
 #include "testing.h"
+#include <stdlib.h>
 
 arena arena_new(size_t cap) {
   // sizeof(char) is guaranteed to be 1
