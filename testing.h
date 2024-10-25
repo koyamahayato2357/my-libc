@@ -42,20 +42,30 @@ extern int TESTING_H_fail;
       longjmp(jb, 1);                                                          \
     }                                                                          \
   while (0)
+
+static bool any_eq(unsigned long long a, unsigned long long b) {
+  return a == b;
+}
+
+static bool str_eq(const char *s1, const char *s2) { return !strcmp(s1, s2); }
+static bool ptr_eq(const void *p1, const void *p2) { return p1 == p2; }
+
 #define expecteq(lhs, rhs)                                                     \
-  do                                                                           \
-    if (!_Generic((lhs),                                                       \
-        double: double_eq(lhs, rhs),                                           \
-        double complex: complex_eq(lhs, rhs),                                  \
-        default: (lhs == rhs))) {                                              \
-      printf("Expected ");                                                     \
-      printany((lhs));                                                         \
-      printf(" found ");                                                       \
-      printany((rhs));                                                         \
-      printf(" at %s:%d", __FILE__, __LINE__);                                 \
-      longjmp(jb, 1);                                                          \
-    }                                                                          \
-  while (0)
+  do {                                                                         \
+    if (_Generic((lhs),                                                        \
+        double: double_eq,                                                     \
+        double complex: complex_eq,                                            \
+        char *: str_eq,                                                        \
+        void *: ptr_eq,                                                        \
+        default: any_eq)(lhs, rhs))                                            \
+      break;                                                                   \
+    printf("Expected ");                                                       \
+    printany((lhs));                                                           \
+    printf(" found ");                                                         \
+    printany((rhs));                                                           \
+    printf(" at %s:%d", __FILE__, __LINE__);                                   \
+    longjmp(jb, 1);                                                            \
+  } while (0)
 
 #define EPSILON 1e-5
 // Helper function to compare doubles with epsilon
