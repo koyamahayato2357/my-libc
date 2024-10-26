@@ -56,8 +56,10 @@ static bool ptr_eq(const void *p1, const void *p2) { return p1 == p2; }
         double: double_eq,                                                     \
         double complex: complex_eq,                                            \
         char *: str_eq,                                                        \
-        void *: ptr_eq,                                                        \
-        default: any_eq)(lhs, rhs))                                            \
+        int: any_eq,                                                           \
+        size_t: any_eq,                                                        \
+        char: any_eq,                                                          \
+        default: ptr_eq)(lhs, rhs))                                            \
       break;                                                                   \
     printf("Expected ");                                                       \
     printany((lhs));                                                           \

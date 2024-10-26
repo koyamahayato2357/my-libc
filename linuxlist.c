@@ -7,11 +7,10 @@ typedef struct {
 } sample;
 
 test(linuxlist) {
-  sample *root = initLinuxList(sample);
+  sample *root = initLinuxList(sample, 1, val);
 
-  appendLinuxList(root, 1);
-  appendLinuxList(root, 2);
-  appendLinuxList(root, 3);
+  appendLinuxList(root, 2, val);
+  appendLinuxList(root, 3, val);
 
   int i = 0;
   foreach_LinuxList(root, elem) expecteq(++i, elem->val);
@@ -20,14 +19,13 @@ test(linuxlist) {
 }
 
 test(nextlist) {
-  sample *root = initLinuxList(sample);
+  sample *root = initLinuxList(sample, 42, val);
   sample *p = root;
 
-  appendLinuxList(root, 42);
-  appendLinuxList(root, 84);
-  appendLinuxList(root, 126);
+  appendLinuxList(root, 84, val);
+  appendLinuxList(root, 126, val);
 
-  sample *n = nextLinuxList(p);
+  sample *n = p;
   expect(n->val == 42);
   n = nextLinuxList(p);
   expect(n->val == 84);
