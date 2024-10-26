@@ -48,9 +48,9 @@ extern int TESTING_H_fail;
     if (eq((typeof(rhs))lhs, rhs))                                                          \
       break;                                                                   \
     printf("Expected ");                                                       \
-    printany((lhs));                                                           \
+    printany(lhs);                                                           \
     printf(" found ");                                                         \
-    printany((rhs));                                                           \
+    printany(rhs);                                                           \
     printf(" at %s:%d", __FILE__, __LINE__);                                   \
     longjmp(jb, 1);                                                            \
   } while (0)
