@@ -11,7 +11,7 @@ arena arena_new(size_t cap) {
 
 void *arena_alloc(arena *a, size_t cap) {
   if (a->p + a->cap < a->next + cap)
-    // should i realloc?
+    // TODO realloc or list structuring
     return nullptr;
   void *ret = a->next;
   a->next += cap;
