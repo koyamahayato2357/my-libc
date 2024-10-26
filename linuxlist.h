@@ -45,7 +45,7 @@ typedef struct LinuxList {
 #define removeLinuxList(l) pass
 #define moveLinuxList(l, dir)                                                  \
   ({                                                                           \
-    l = container_of((l)->LINUXLIST_MEMBER.dir, __typeof(*(l)),                \
+    l = container_of((l)->LINUXLIST_MEMBER.dir, typeof(*(l)),                  \
                      LINUXLIST_MEMBER);                                        \
   })
 #define nextLinuxList(l) moveLinuxList(l, next)
