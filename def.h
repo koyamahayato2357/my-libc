@@ -13,12 +13,7 @@
 // specified length bit unsigned integer
 #define u(n) unsigned _BitInt(n)
 #define galloc(type, size) /* general allocator */                             \
-  ({                                                                           \
-    void *p = malloc(sizeof(type) * size);                                     \
-    if (p == nullptr)                                                          \
-      panic(ERR_ALLOC_FAILED);                                                 \
-    p;                                                                         \
-  })
+  ({ malloc(sizeof(type) * size) orelse ppanicx(ERR_ALLOC_FAILED); })
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
 
