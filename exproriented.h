@@ -16,6 +16,19 @@
     return a;                                                                  \
     0                                                                          \
   })
+#undef unreachable // builtin macro
+#define unreachable                                                            \
+  ({                                                                           \
+    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
+    0;                                                                         \
+  })
+#define panicx(e)                                                              \
+  ({                                                                           \
+    panic(e);                                                                  \
+    0;                                                                         \
+  })
+
+// use in pointer calculation
 #define pbreakx                                                                \
   ({                                                                           \
     break;                                                                     \
@@ -31,19 +44,6 @@
     return a;                                                                  \
     (void *)0                                                                  \
   })
-#define ifx(cond) (cond) ?
-#define elsex :
-#undef unreachable // builtin macro
-#define unreachable                                                            \
-  ({                                                                           \
-    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
-    0;                                                                         \
-  })
-#define panicx(e)                                                              \
-  ({                                                                           \
-    panic(e);                                                                  \
-    0;                                                                         \
-  })
 #define punreachable                                                           \
   ({                                                                           \
     longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
@@ -54,4 +54,7 @@
     panic(e);                                                                  \
     (void *)0;                                                                 \
   })
+
+#define ifx(cond) (cond) ?
+#define elsex :
 #define orelse ?:
