@@ -22,7 +22,7 @@ void arena_destroy(arena *a) { free(a->p); }
 
 test(arena) {
   arena a dropf(arena_destroy) = arena_new(100);
-  void *p = arena_alloc(&a, 10);
+  void *p [[maybe_unused]] = arena_alloc(&a, 10);
   expecteq(100, a.cap);
   expect(a.p + 10 == a.next);
 }

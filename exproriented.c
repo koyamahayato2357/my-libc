@@ -17,11 +17,11 @@
 test(in_expr) {
   int i = 0;
   for (;;) {
-    int j = ifx(i == 1) 1 elsex breakx;
+    int j [[maybe_unused]] = ifx(i == 1) 1 elsex breakx;
     testing_unreachable;
   }
   for (int i = 0; i < 5; i++) {
-    int j = continuex;
+    int j [[maybe_unused]] = continuex;
     testing_unreachable;
   }
 }
@@ -50,7 +50,7 @@ test(multi_statement) {
     int i = 9;
     i - 1;
   }) elsex({
-    int i = a;
+    int i [[maybe_unused]] = a;
     a;
   });
   expecteq(a, 2);

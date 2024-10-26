@@ -13,7 +13,7 @@ extern int TESTING_H_fail;
   void TESTING_H_tester##name(jmp_buf);                                        \
   __attribute__((constructor)) void TESTING_H_testrunner##name() {             \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
-    jmp_buf jb;                                                                \
+    jmp_buf jb [[maybe_unused]];                                               \
     printf("\033[34mTesting\033[0m " #name "...");                             \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
@@ -28,7 +28,7 @@ extern int TESTING_H_fail;
     puts("\033[32m[OK]\033[0m");                                               \
     TESTING_H_success++;                                                       \
   }                                                                            \
-  void TESTING_H_tester##name(jmp_buf jb)
+  void TESTING_H_tester##name(jmp_buf jb [[maybe_unused]])
 
 #define main main_
 #else
@@ -45,12 +45,12 @@ extern int TESTING_H_fail;
 
 #define expecteq(lhs, rhs)                                                     \
   do {                                                                         \
-    if (eq((typeof(rhs))lhs, rhs))                                                          \
+    if (eq((typeof(rhs))lhs, rhs))                                             \
       break;                                                                   \
     printf("Expected ");                                                       \
-    printany(lhs);                                                           \
+    printany(lhs);                                                             \
     printf(" found ");                                                         \
-    printany(rhs);                                                           \
+    printany(rhs);                                                             \
     printf(" at %s:%d", __FILE__, __LINE__);                                   \
     longjmp(jb, 1);                                                            \
   } while (0)

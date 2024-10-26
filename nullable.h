@@ -15,7 +15,9 @@
   Option(T) and_then(Option(T), T (*)(T)) __attribute__((overloadable));
 
 #define Null(T)                                                                \
-  (Option(T)) { true }
+  (Option(T)) {                                                                \
+    true, (T) { 0 }                                                            \
+  }
 #define isnull(o) (o).isnull
 #define unwrap_or(o, default)                                                  \
   ({                                                                           \
