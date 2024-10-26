@@ -11,8 +11,3 @@ __attribute__((destructor)) void TESTING_H_report_test_result() {
          TESTING_H_success + TESTING_H_fail);
 }
 #endif
-
-bool double_eq(double a, double b) { return fabs(a - b) < EPSILON; }
-bool complex_eq(double complex a, double complex b) {
-  return fabs(creal(a - b)) < EPSILON && fabs(cimag(a - b)) < EPSILON;
-}

@@ -1,10 +1,10 @@
 #pragma once
 #include "errcode.h"
 #include "exception.h"
+#include "gene.h"
 #include <setjmp.h>
 #include <stdio.h>
 #include <string.h>
-#include <tgmath.h>
 
 #ifdef TEST_MODE
 extern int TESTING_H_success;
@@ -43,23 +43,9 @@ extern int TESTING_H_fail;
     }                                                                          \
   while (0)
 
-static bool any_eq(unsigned long long a, unsigned long long b) {
-  return a == b;
-}
-
-static bool str_eq(const char *s1, const char *s2) { return !strcmp(s1, s2); }
-static bool ptr_eq(const void *p1, const void *p2) { return p1 == p2; }
-
 #define expecteq(lhs, rhs)                                                     \
   do {                                                                         \
-    if (_Generic((lhs),                                                        \
-        double: double_eq,                                                     \
-        double complex: complex_eq,                                            \
-        char *: str_eq,                                                        \
-        int: any_eq,                                                           \
-        size_t: any_eq,                                                        \
-        char: any_eq,                                                          \
-        default: ptr_eq)(lhs, rhs))                                            \
+    if (eq((typeof(rhs))lhs, rhs))                                                          \
       break;                                                                   \
     printf("Expected ");                                                       \
     printany((lhs));                                                           \
@@ -69,24 +55,9 @@ static bool ptr_eq(const void *p1, const void *p2) { return p1 == p2; }
     longjmp(jb, 1);                                                            \
   } while (0)
 
-#define EPSILON 1e-5
-// Helper function to compare doubles with epsilon
-bool double_eq(double, double);
-
-bool complex_eq(double complex, double complex);
-
 #define testing_unreachable                                                    \
   ({                                                                           \
     printf("\033[31mReached line %s:%d\033[0m\n", __FILE__, __LINE__);         \
     longjmp(jb, ERR_REACHED_UNREACHABLE);                                      \
     (size_t)0;                                                                 \
   })
-#define printany(x)                                                            \
-  printf(_Generic((x),                                                         \
-         int: "%d",                                                            \
-         size_t: "%zu",                                                        \
-         double: "%lf",                                                        \
-         char: "%c",                                                           \
-         char *: "%s",                                                         \
-         default: "%p"),                                                       \
-         x)
