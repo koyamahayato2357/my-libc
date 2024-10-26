@@ -5,9 +5,9 @@
  * ----------------------------------------------------------------------------
  * break expression      | p = next() orelse breakx;
  * ----------------------------------------------------------------------------
- * continue expression   | some_cond || continuex;
+ * continue expression   | is_validinput(input) orelse continuex;
  * ----------------------------------------------------------------------------
- * return expression     | char *homedir = getenv("HOME") orelse returnx(-1);
+ * return expression     | char *homedir = getenv("HOME") orelse preturnx(-1);
  * ----------------------------------------------------------------------------
  */
 
