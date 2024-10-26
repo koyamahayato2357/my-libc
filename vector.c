@@ -35,13 +35,11 @@
     vec->buf = realloc(vec->buf, n);                                           \
   }                                                                            \
   __attribute__((overloadable)) Vector(T)                                      \
-      _initVectorWithArray(T *a, size_t len) {                                 \
-    size_t blockn = 1;                                                         \
-    while (DEFAULT_VECCAP * blockn < len)                                      \
-      blockn++;                                                                \
-    T *buf = galloc(T, DEFAULT_VECCAP * blockn);                               \
+      _initVectorWithArray(const T *const a, size_t len) {                     \
+    size_t cap = bigger(len * 1.5, DEFAULT_VECCAP);                            \
+    T *buf = galloc(T, cap);                                                   \
     memcpy(buf, a, len);                                                       \
-    return (Vector(T)){DEFAULT_VECCAP * blockn, len, buf};                     \
+    return (Vector(T)){cap, len, buf};                                         \
   }                                                                            \
   __attribute__((overloadable)) void deinitVector(Vector(T) * vec) {           \
     /* for drop */                                                             \
