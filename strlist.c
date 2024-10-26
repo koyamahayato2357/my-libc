@@ -24,17 +24,21 @@ char *toString(const StringList *const sl) {
   return ret;
 }
 
+void deleteStringList(StringList **sl) {
+  foreach_LinuxList(*sl, item) deinitVector(&item->v);
+  deleteLinuxList(*sl);
+}
+
 test(initstrlist) {
-  StringList *sl = initStringList("hello world!");
+  dropStringList StringList *sl = initStringList("hello world!");
   expecteq("hello world!", sl->v.buf);
   append(sl, "hello");
   StringList *prevsl = container_of(sl->ll.prev, StringList, ll);
   expecteq("hello", prevsl->v.buf);
-  deleteLinuxList(sl);
 }
 
 test(tostring) {
-  StringList *sl = initStringList("this is sample text");
+  dropStringList StringList *sl = initStringList("this is sample text");
   append(sl, "hello");
   expecteq(sl->ll.next, sl->ll.prev);
   expecteq(sl->ll.next->next, &sl->ll);
