@@ -38,7 +38,7 @@ extern int TESTING_H_fail;
 #define expect(cond)                                                           \
   do                                                                           \
     if (!(cond)) {                                                             \
-      printf("Failed at %s:%d %s ", __FILE__, __LINE__, #cond);                \
+      printf("Failed at " HERE " %s ", #cond);                                 \
       longjmp(jb, 1);                                                          \
     }                                                                          \
   while (0)
@@ -51,13 +51,13 @@ extern int TESTING_H_fail;
     printany(lhs);                                                             \
     printf(" found ");                                                         \
     printany(rhs);                                                             \
-    printf(" at %s:%d", __FILE__, __LINE__);                                   \
+    printf(" at " HERE);                                                       \
     longjmp(jb, 1);                                                            \
   } while (0)
 
 #define testing_unreachable                                                    \
   ({                                                                           \
-    printf("\033[31mReached line %s:%d\033[0m\n", __FILE__, __LINE__);         \
+    puts("\033[31mReached line " HERE "\033[0m");                              \
     longjmp(jb, ERR_REACHED_UNREACHABLE);                                      \
     (size_t)0;                                                                 \
   })

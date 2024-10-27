@@ -3,6 +3,9 @@
 #include "exproriented.h"
 
 #define CAT(a, b) a##b
+#define TOSTR(x) #x
+#define TO2STR(x) TOSTR(x)
+#define HERE __FILE__ ":" TO2STR(__LINE__)
 #define overloadable __attribute__((overloadable))
 
 // free when exiting scope
