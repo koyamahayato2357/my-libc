@@ -27,6 +27,11 @@
     panic(e);                                                                  \
     0;                                                                         \
   })
+#define throwx(e)                                                              \
+  ({                                                                           \
+    throw(e);                                                                  \
+    0;                                                                         \
+  })
 
 // use in pointer calculation
 #define pbreakx                                                                \
@@ -52,6 +57,11 @@
 #define ppanicx(e)                                                             \
   ({                                                                           \
     panic(e);                                                                  \
+    (void *)0;                                                                 \
+  })
+#define pthrowx(e)                                                             \
+  ({                                                                           \
+    throw(e);                                                                  \
     (void *)0;                                                                 \
   })
 
