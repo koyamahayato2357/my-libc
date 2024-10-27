@@ -1,4 +1,5 @@
 #pragma once
+#include <stddef.h>
 #include <stdlib.h>
 
 typedef struct LinuxList {
@@ -10,11 +11,10 @@ typedef struct LinuxList {
 #define enableLinuxList LinuxList LINUXLIST_MEMBER
 #define LinuxList(T) LinuxList##T
 
-#define offset_of(type, member) ((size_t) & ((type *)0)->member)
 #define container_of(ptr, type, member)                                        \
   ({                                                                           \
     const typeof(((type *)0)->member) *mptr = ptr;                             \
-    (type *)((char *)mptr - offset_of(type, member));                          \
+    (type *)((char *)mptr - offsetof(type, member));                           \
   })
 
 #define initLinuxList(T, v, member)                                            \
