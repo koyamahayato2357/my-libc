@@ -32,7 +32,7 @@ extern int TESTING_H_fail;
 
 #define main main_
 #else
-#define test(name) void TESTING_H_dummy##name()
+#define test(name) void TESTING_H_dummy##name(jmp_buf jb [[maybe_unused]])
 #endif
 
 #define expect(cond)                                                           \
