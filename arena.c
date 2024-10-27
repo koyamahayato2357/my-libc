@@ -21,14 +21,14 @@ void *arena_alloc(arena *a, size_t cap) {
 void arena_destroy(arena *a) { free(a->p); }
 
 test(arena) {
-  arena a dropf(arena_destroy) = arena_new(100);
+  arena a ondrop(arena_destroy) = arena_new(100);
   void *p [[maybe_unused]] = arena_alloc(&a, 10);
   expecteq(100, a.cap);
   expect(a.p + 10 == a.next);
 }
 
 test(boundary_arena) {
-  arena a dropf(arena_destroy) = arena_new(10);
+  arena a ondrop(arena_destroy) = arena_new(10);
   void *p = arena_alloc(&a, 10);
   expect(p != nullptr);
   p = arena_alloc(&a, 1);

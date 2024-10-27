@@ -3,7 +3,7 @@
 #include "vector.h"
 
 #define initStringList(a) _initStringList(a, sizeof(a))
-#define dropStringList dropf(deleteStringList)
+#define dropStringList ondrop(deleteStringList)
 
 typedef struct {
   enableLinuxList;

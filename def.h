@@ -11,7 +11,7 @@
 // free when exiting scope
 #define drop __attribute__((cleanup(free4drop)))
 // call specified function when exiting scope
-#define dropf(cf) __attribute__((cleanup(cf)))
+#define ondrop(cf) __attribute__((cleanup(cf)))
 // specified length bit integer
 #define i(n) _BitInt(n)
 // specified length bit unsigned integer
