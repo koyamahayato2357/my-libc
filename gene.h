@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 #define DEF_GEN(T)                                                             \
-  void printany(T) overloadable;                                           \
+  void printany(T) overloadable;                                               \
   bool eq(T, T) overloadable;
 
 DEF_GEN(int)
