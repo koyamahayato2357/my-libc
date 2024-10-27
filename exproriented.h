@@ -68,3 +68,13 @@
 #define ifx(cond) (cond) ?
 #define elsex :
 #define orelse ?:
+#define $(statements)                                                          \
+  ({                                                                           \
+    statements;                                                                \
+    0;                                                                         \
+  })
+#define p$(statements)                                                         \
+  ({                                                                           \
+    statements;                                                                \
+    (void *)0                                                                  \
+  })
