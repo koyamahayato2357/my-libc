@@ -1,12 +1,12 @@
 #pragma once
-#include "linuxlist.h"
+#include "list.h"
 #include "vector.h"
 
 #define initStringList(a) _initStringList(a, sizeof(a))
 #define dropStringList ondrop(deleteStringList)
 
 typedef struct {
-  enableLinuxList;
+  enableList;
   Vector(char) v;
 } StringList;
 

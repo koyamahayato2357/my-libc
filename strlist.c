@@ -3,21 +3,21 @@
 
 StringList *_initStringList(char *buf, size_t len) {
   StringList *ret =
-      initLinuxList(StringList, _initVectorWithArray(buf, len), v);
+      initList(StringList, _initVectorWithArray(buf, len), v);
   return ret;
 }
 
 overloadable void append(StringList *sl, char *buf) {
   Vector(char) new = initVectorWithArray(buf);
-  appendLinuxList(sl, new, v);
+  appendList(sl, new, v);
 }
 
 char *toString(const StringList *const sl) {
   size_t len = 0;
-  foreach_LinuxList(sl, item) len += item->v.len;
+  foreach_List(sl, item) len += item->v.len;
   char *ret = galloc(char, len);
   size_t offset = 0;
-  foreach_LinuxList(sl, item) {
+  foreach_List(sl, item) {
     memcpy(ret + offset, item->v.buf, item->v.len - 1);
     offset += item->v.len - 1;
   }
@@ -25,8 +25,8 @@ char *toString(const StringList *const sl) {
 }
 
 void deleteStringList(StringList **sl) {
-  foreach_LinuxList(*sl, item) deinitVector(&item->v);
-  deleteLinuxList(*sl);
+  foreach_List(*sl, item) deinitVector(&item->v);
+  deleteList(*sl);
 }
 
 test(initstrlist) {
