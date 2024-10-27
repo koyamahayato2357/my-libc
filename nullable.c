@@ -68,3 +68,8 @@ test(and_then) {
   o = Some(10);
   expecteq(100, unwrap(and_then(o, square_o)));
 }
+
+test(chain) {
+  Option(int) o = Some(4);
+  expecteq(65536, unwrap(map(map(map(o, square), square), square)));
+}
