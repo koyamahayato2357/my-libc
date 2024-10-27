@@ -3,11 +3,12 @@
 #include "testing.h"
 
 #define DEF_OPTIONFN(T)                                                        \
-  Option(T) Some(T v) __attribute__((overloadable)) {                          \
-    return (Option(T)){false, v};                                              \
-  }                                                                            \
-  Option(T) and_then(Option(T) o, T (*f)(T)) __attribute__((overloadable)) {   \
+  Option(T) Some(T v) overloadable { return (Option(T)){false, v}; }           \
+  Option(T) map(Option(T) o, T (*f)(T)) overloadable {                         \
     return ifx(isnull(o)) Null(T) elsex Some(f(unwrap_unsafe(o)));             \
+  }                                                                            \
+  Option(T) and_then(Option(T) o, Option(T) (*f)(T)) overloadable {            \
+    return ifx(isnull(o)) Null(T) elsex f(unwrap_unsafe(o));                   \
   }
 
 DEF_OPTIONFN(char)
@@ -44,7 +45,6 @@ test(unwrap_or) {
 test(unwrap_unsafe) {
   Option(int) o = Some(99);
   expecteq(unwrap_unsafe(o), 99);
-  o = Null(int);
   // Undefined behaivior; might be false
   // expecteq(unwrap_unsafe(Null(T)), Null(T).val);
   o = Some(334);
@@ -53,9 +53,18 @@ test(unwrap_unsafe) {
 
 int square(int x) { return x * x; }
 
+test(map) {
+  Option(int) o = Null(int);
+  expect(isnull(map(o, square)));
+  o = Some(10);
+  expecteq(100, unwrap(map(o, square)));
+}
+
+Option(int) square_o(int x) { return Some(x * x); }
+
 test(and_then) {
   Option(int) o = Null(int);
-  expect(isnull(and_then(o, square)));
+  expect(isnull(and_then(o, square_o)));
   o = Some(10);
-  expecteq(unwrap(and_then(o, square)), 100);
+  expecteq(100, unwrap(and_then(o, square_o)));
 }

@@ -1,9 +1,10 @@
 #pragma once
+#include "def.h"
 #include <stdio.h>
 
 #define DEF_GEN(T)                                                             \
-  void printany(T) __attribute__((overloadable));                              \
-  bool eq(T, T) __attribute__((overloadable));
+  void printany(T) overloadable;                                           \
+  bool eq(T, T) overloadable;
 
 DEF_GEN(int)
 DEF_GEN(size_t)

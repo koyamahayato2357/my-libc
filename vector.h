@@ -16,16 +16,15 @@
     int len /* unit: bytes */;                                                 \
     T *buf;                                                                    \
   } Vector(T);                                                                 \
-  void expand(Vector(T) *) __attribute__((overloadable));                      \
-  void push_unsafe(Vector(T) *, T) __attribute__((overloadable));              \
-  void push(Vector(T) *, T) __attribute__((overloadable));                     \
-  void shrink(Vector(T) *) __attribute__((overloadable));                      \
-  Option(T) pop_raw(Vector(T) *) __attribute__((overloadable));                \
-  Option(T) pop(Vector(T) *) __attribute__((overloadable));                    \
-  void resize(Vector(T) *, size_t) __attribute__((overloadable));              \
-  Vector(T) _initVectorWithArray(const T *const, size_t)                       \
-      __attribute__((overloadable));                                           \
-  void deinitVector(Vector(T) *) __attribute__((overloadable));
+  void expand(Vector(T) *) overloadable;                                       \
+  void push_unsafe(Vector(T) *, T) overloadable;                               \
+  void push(Vector(T) *, T) overloadable;                                      \
+  void shrink(Vector(T) *) overloadable;                                       \
+  Option(T) pop_raw(Vector(T) *) overloadable;                                 \
+  Option(T) pop(Vector(T) *) overloadable;                                     \
+  void resize(Vector(T) *, size_t) overloadable;                               \
+  Vector(T) _initVectorWithArray(const T *const, size_t) overloadable;         \
+  void deinitVector(Vector(T) *) overloadable;
 
 DEF_VEC(int)
 DEF_VEC(char)

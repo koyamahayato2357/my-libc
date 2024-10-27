@@ -3,6 +3,7 @@
 #include "exproriented.h"
 
 #define CAT(a, b) a##b
+#define overloadable __attribute__((overloadable))
 
 // free when exiting scope
 #define drop __attribute__((cleanup(free4drop)))

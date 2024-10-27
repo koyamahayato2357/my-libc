@@ -20,11 +20,11 @@
     size_t len;                                                                \
     size_t i;                                                                  \
   } Iter(T);                                                                   \
-  Iter(T) _initIterWithArray(T *buf) __attribute__((overloadable));            \
-  Iter(T) initIterWithVector(Vector(T)) __attribute__((overloadable));         \
-  Option(T) next(Iter(T) * iter) __attribute__((overloadable));                \
-  void iterStart(Iter(T)) __attribute__((overloadable));                       \
-  void iterEnd(Iter(T)) __attribute__((overloadable));
+  Iter(T) _initIterWithArray(T *buf) overloadable;                             \
+  Iter(T) initIterWithVector(Vector(T)) overloadable;                          \
+  Option(T) next(Iter(T) * iter) overloadable;                                 \
+  void iterStart(Iter(T)) overloadable;                                        \
+  void iterEnd(Iter(T)) overloadable;
 
 DEF_ITER(char);
 DEF_ITER(int);

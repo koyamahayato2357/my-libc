@@ -11,8 +11,9 @@
     bool isnull;                                                               \
     T val;                                                                     \
   } Option(T);                                                                 \
-  Option(T) Some(T v) __attribute__((overloadable));                           \
-  Option(T) and_then(Option(T), T (*)(T)) __attribute__((overloadable));
+  Option(T) Some(T v) overloadable;                                            \
+  Option(T) map(Option(T), T (*)(T)) overloadable;                             \
+  T and_then(Option(T), T (*)(T)) overloadable;
 
 #define Null(T)                                                                \
   (Option(T)) {                                                                \

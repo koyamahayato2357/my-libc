@@ -3,45 +3,44 @@
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  __attribute__((overloadable)) void expand(Vector(T) * vec) {                 \
+  overloadable void expand(Vector(T) * vec) {                                  \
     if (vec->cap >= vec->len + 1)                                              \
       return;                                                                  \
     vec->buf = realloc(vec->buf, vec->cap * 2);                                \
     vec->cap *= 2;                                                             \
   }                                                                            \
-  __attribute__((overloadable)) void push_unsafe(Vector(T) * vec, T v) {       \
+  overloadable void push_unsafe(Vector(T) * vec, T v) {                        \
     vec->buf[vec->len++] = v;                                                  \
   }                                                                            \
-  __attribute__((overloadable)) void push(Vector(T) * vec, T v) {              \
+  overloadable void push(Vector(T) * vec, T v) {                               \
     expand(vec);                                                               \
     push_unsafe(vec, v);                                                       \
   }                                                                            \
-  __attribute__((overloadable)) void shrink(Vector(T) * vec) {                 \
+  overloadable void shrink(Vector(T) * vec) {                                  \
     if (vec->len * 4 > vec->cap)                                               \
       return;                                                                  \
     vec->buf = realloc(vec->buf, vec->cap / 2);                                \
     vec->cap /= 2;                                                             \
   }                                                                            \
-  __attribute__((overloadable)) Option(T) pop_raw(Vector(T) * vec) {           \
+  overloadable Option(T) pop_raw(Vector(T) * vec) {                            \
     if (vec->len == 0)                                                         \
       return Null(T);                                                          \
     return Some(vec->buf[--(vec->len)]);                                       \
   }                                                                            \
-  __attribute__((overloadable)) Option(T) pop(Vector(T) * vec) {               \
+  overloadable Option(T) pop(Vector(T) * vec) {                                \
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
-  __attribute__((overloadable)) void resize(Vector(T) * vec, size_t n) {       \
+  overloadable void resize(Vector(T) * vec, size_t n) {                        \
     vec->buf = realloc(vec->buf, n);                                           \
   }                                                                            \
-  __attribute__((overloadable)) Vector(T)                                      \
-      _initVectorWithArray(const T *const a, size_t len) {                     \
+  overloadable Vector(T) _initVectorWithArray(const T *const a, size_t len) {  \
     size_t cap = bigger(len * 1.5, DEFAULT_VECCAP);                            \
     T *buf = galloc(T, cap);                                                   \
     memcpy(buf, a, len);                                                       \
     return (Vector(T)){cap, len, buf};                                         \
   }                                                                            \
-  __attribute__((overloadable)) void deinitVector(Vector(T) * vec) {           \
+  overloadable void deinitVector(Vector(T) * vec) {                            \
     /* for drop */                                                             \
     free(vec->buf);                                                            \
   }

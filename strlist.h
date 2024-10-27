@@ -11,6 +11,6 @@ typedef struct {
 } StringList;
 
 StringList *_initStringList(char *, size_t);
-void append(StringList *, char *) __attribute__((overloadable));
+void append(StringList *, char *) overloadable;
 char *toString(const StringList *const);
 void deleteStringList(StringList **);

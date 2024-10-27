@@ -7,7 +7,7 @@ StringList *_initStringList(char *buf, size_t len) {
   return ret;
 }
 
-__attribute__((overloadable)) void append(StringList *sl, char *buf) {
+overloadable void append(StringList *sl, char *buf) {
   Vector(char) new = initVectorWithArray(buf);
   appendLinuxList(sl, new, v);
 }

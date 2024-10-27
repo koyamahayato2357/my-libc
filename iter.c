@@ -3,22 +3,19 @@
 #include "testing.h"
 
 #define DEF_ITERFN(T)                                                          \
-  Iter(T) _initIterWithArray(T *buf, size_t len)                               \
-      __attribute__((overloadable)) {                                          \
+  Iter(T) _initIterWithArray(T *buf, size_t len) overloadable {                \
     return (Iter(T)){buf, len, 0};                                             \
   }                                                                            \
-  Iter(T) initIterWithVector(Vector(T) vec) __attribute__((overloadable)) {    \
+  Iter(T) initIterWithVector(Vector(T) vec) overloadable {                     \
     return (Iter(T)){vec.buf, vec.len, 0};                                     \
   }                                                                            \
-  Option(T) next(Iter(T) * iter) __attribute__((overloadable)) {               \
+  Option(T) next(Iter(T) * iter) overloadable {                                \
     if (iter->len <= iter->i)                                                  \
       return Null(T);                                                          \
     return Some(iter->buf[iter->i++]);                                         \
   }                                                                            \
-  void iterStart(Iter(T) iter) __attribute__((overloadable)) { iter.i = 0; }   \
-  void iterEnd(Iter(T) iter) __attribute__((overloadable)) {                   \
-    iter.i = iter.len;                                                         \
-  }
+  void iterStart(Iter(T) iter) overloadable { iter.i = 0; }                    \
+  void iterEnd(Iter(T) iter) overloadable { iter.i = iter.len; }
 
 DEF_ITERFN(char)
 DEF_ITERFN(int)
