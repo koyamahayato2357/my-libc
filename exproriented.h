@@ -4,33 +4,33 @@
 #define breakx                                                                 \
   ({                                                                           \
     break;                                                                     \
-    0;                                                                         \
+    0UL;                                                                         \
   })
 #define continuex                                                              \
   ({                                                                           \
     continue;                                                                  \
-    0;                                                                         \
+    0UL;                                                                         \
   })
 #define returnx(a)                                                             \
   ({                                                                           \
     return a;                                                                  \
-    0                                                                          \
+    0UL                                                                          \
   })
 #undef unreachable // builtin macro
 #define unreachable                                                            \
   ({                                                                           \
     longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
-    0;                                                                         \
+    0UL;                                                                       \
   })
 #define panicx(e)                                                              \
   ({                                                                           \
     panic(e);                                                                  \
-    0;                                                                         \
+    0UL;                                                                         \
   })
 #define throwx(e)                                                              \
   ({                                                                           \
     throw(e);                                                                  \
-    0;                                                                         \
+    0UL;                                                                         \
   })
 
 // use in pointer calculation
