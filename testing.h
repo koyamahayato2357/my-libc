@@ -44,17 +44,17 @@ extern int TESTING_H_fail;
   (__VA_ARGS__)
 #define MEMBER_NAME(member) t->member
 #define MEMBER_NAMES(...) FOR_EACH(MEMBER_NAME, __VA_ARGS__)
-#define test_table(name, fn, datast, d, ...)                                   \
+#define test_table(name, fn, datast, cases, ...)                               \
   typedef datast ds##name;                                                     \
   __attribute__((constructor)) void TESTING_H_tabletester##name() {            \
-    ds##name *data = d;                                                        \
+    ds##name *data = cases;                                                    \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
     printf("\033[34mTesting\033[0m " #name "...");                             \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
     printf("\033[2m=> ");                                                      \
-    for (size_t i = 0; i < sizeof(d) / sizeof(d[0]); i++) {                    \
+    for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {            \
       ds##name *t = &data[i];                                                  \
       if (fn(MEMBER_NAMES(__VA_ARGS__)) != t->result) {                        \
         printf("Failed at record %zu ", i);                                    \
@@ -70,6 +70,7 @@ extern int TESTING_H_fail;
 #define main main_
 #else
 #define test(name) void TESTING_H_dummy##name(jmp_buf jb [[maybe_unused]])
+#define test_table(...)
 #endif
 
 #define expect(cond)                                                           \

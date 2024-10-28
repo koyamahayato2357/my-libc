@@ -4,17 +4,17 @@
 #define breakx                                                                 \
   ({                                                                           \
     break;                                                                     \
-    0UL;                                                                         \
+    0UL;                                                                       \
   })
 #define continuex                                                              \
   ({                                                                           \
     continue;                                                                  \
-    0UL;                                                                         \
+    0UL;                                                                       \
   })
 #define returnx(a)                                                             \
   ({                                                                           \
     return a;                                                                  \
-    0UL                                                                          \
+    0UL                                                                        \
   })
 #undef unreachable // builtin macro
 #define unreachable                                                            \
@@ -25,12 +25,12 @@
 #define panicx(e)                                                              \
   ({                                                                           \
     panic(e);                                                                  \
-    0UL;                                                                         \
+    0UL;                                                                       \
   })
 #define throwx(e)                                                              \
   ({                                                                           \
     throw(e);                                                                  \
-    0UL;                                                                         \
+    0UL;                                                                       \
   })
 
 // use in pointer calculation
@@ -71,7 +71,7 @@
 #define $(statements)                                                          \
   ({                                                                           \
     statements;                                                                \
-    0;                                                                         \
+    0UL;                                                                       \
   })
 #define p$(statements)                                                         \
   ({                                                                           \
