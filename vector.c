@@ -45,7 +45,7 @@
     free(vec->buf);                                                            \
   }
 
-APPLY_TYPE_GEN(DEF_VECFN)
+APPLY_PRIMITIVE_TYPES(DEF_VECFN)
 
 test(push) {
   Vector(char) vec = initVector(char);

@@ -16,7 +16,7 @@
     return unwrap_or(o, (T)panicx(ERR_REACHED_UNREACHABLE));                   \
   }
 
-APPLY_TYPE_GEN(DEF_OPTIONFN)
+APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)
 
 test(Some) {
   Option(size_t) option = Some((size_t)0);

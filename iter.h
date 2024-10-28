@@ -26,4 +26,4 @@
   void iterStart(Iter(T)) overloadable;                                        \
   void iterEnd(Iter(T)) overloadable;
 
-APPLY_TYPE_GEN(DEF_ITER)
+APPLY_PRIMITIVE_TYPES(DEF_ITER)

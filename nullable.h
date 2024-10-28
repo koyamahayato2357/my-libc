@@ -25,4 +25,4 @@
   }
 #define unwrap_or(o, default) (ifx(isnull(o)) default elsex unwrap_unsafe(o))
 
-APPLY_TYPE_GEN(DEF_OPTIONAL)
+APPLY_PRIMITIVE_TYPES(DEF_OPTIONAL)
