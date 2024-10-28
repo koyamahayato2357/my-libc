@@ -23,6 +23,6 @@
   (Option(T)) {                                                                \
     true, (T) { 0 }                                                            \
   }
-#define unwrap_or(o, default) (ifx(isnull(o)) default elsex unwrap_unsafe(o))
+#define unwrap_or(o, default) ($if(isnull(o)) default $else unwrap_unsafe(o))
 
 APPLY_PRIMITIVE_TYPES(DEF_OPTIONAL)

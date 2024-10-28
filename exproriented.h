@@ -18,8 +18,8 @@
 #define p$panic(e) p$(panic(e))
 #define p$throw(e) p$(throw(e))
 
-#define ifx(cond) (cond) ?
-#define elsex :
+#define $if(cond) (cond) ?
+#define $else :
 #define orelse ?:
 #define $(statements)                                                          \
   ({                                                                           \

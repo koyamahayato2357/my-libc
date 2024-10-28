@@ -13,7 +13,7 @@ overloadable void printany(int x) { printf("%d", x); }
 overloadable void printany(size_t x) { printf("%zu", x); }
 overloadable void printany(double x) { printf("%lf", x); }
 overloadable void printany(char x) { printf("%c", x); }
-overloadable void printany(bool x) { printf(ifx(x) "true" elsex "false"); }
+overloadable void printany(bool x) { printf($if(x) "true" $else "false"); }
 overloadable void printany(char *x) { printf("%s", x); }
 overloadable void printany(void *x) { printf("%p", x); }
 

@@ -5,10 +5,10 @@
 #define DEF_OPTIONFN(T)                                                        \
   Option(T) Some(T v) overloadable { return (Option(T)){false, v}; }           \
   Option(T) map(Option(T) o, T (*f)(T)) overloadable {                         \
-    return ifx(isnull(o)) Null(T) elsex Some(f(unwrap_unsafe(o)));             \
+    return $if(isnull(o)) Null(T) $else Some(f(unwrap_unsafe(o)));             \
   }                                                                            \
   Option(T) and_then(Option(T) o, Option(T) (*f)(T)) overloadable {            \
-    return ifx(isnull(o)) Null(T) elsex f(unwrap_unsafe(o));                   \
+    return $if(isnull(o)) Null(T) $else f(unwrap_unsafe(o));                   \
   }                                                                            \
   bool isnull(Option(T) o) overloadable { return o.isnull; }                   \
   T unwrap_unsafe(Option(T) o) overloadable { return o.val; }                  \

@@ -17,7 +17,7 @@
 test(in_expr) {
   int i = 0;
   for (;;) {
-    int j [[maybe_unused]] = ifx(i == 1) 1 elsex $break;
+    int j [[maybe_unused]] = $if(i == 1) 1 $else $break;
     testing_unreachable;
   }
   for (int i = 0; i < 5; i++) {
@@ -38,18 +38,18 @@ test(in_statement) {
 }
 
 test(multi_statement) {
-  int a = ifx(true)({
+  int a = $if(true)({
     int i = 1;
     i * 2;
-  }) elsex({
+  }) $else({
     int i = 5;
     (i + 1) * i;
   });
   expecteq(a, 2);
-  a = ifx(false)({
+  a = $if(false)({
     int i = 9;
     i - 1;
-  }) elsex({
+  }) $else({
     int i [[maybe_unused]] = a;
     a;
   });
