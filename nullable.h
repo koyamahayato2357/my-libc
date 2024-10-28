@@ -13,20 +13,16 @@
   } Option(T);                                                                 \
   Option(T) Some(T v) overloadable;                                            \
   Option(T) map(Option(T), T (*)(T)) overloadable;                             \
-  Option(T) and_then(Option(T), Option(T) (*)(T)) overloadable;
+  Option(T) and_then(Option(T), Option(T) (*)(T)) overloadable;                \
+  bool isnull(Option(T)) overloadable;                                         \
+  T unwrap_unsafe(Option(T)) overloadable;                                     \
+  T unwrap(Option(T)) overloadable;
 
 #define Null(T)                                                                \
   (Option(T)) {                                                                \
     true, (T) { 0 }                                                            \
   }
-#define isnull(o) (o).isnull
-#define unwrap_or(o, default)                                                  \
-  ({                                                                           \
-    auto temp = o;                                                             \
-    temp.isnull ? default : temp.val;                                          \
-  })
-#define unwrap(o) unwrap_or(o, unreachable)
-#define unwrap_unsafe(o) ((o).val)
+#define unwrap_or(o, default) (ifx(isnull(o)) default elsex unwrap_unsafe(o))
 
 DEF_OPTIONAL(char);
 DEF_OPTIONAL(int);

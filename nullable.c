@@ -9,6 +9,11 @@
   }                                                                            \
   Option(T) and_then(Option(T) o, Option(T) (*f)(T)) overloadable {            \
     return ifx(isnull(o)) Null(T) elsex f(unwrap_unsafe(o));                   \
+  }                                                                            \
+  bool isnull(Option(T) o) overloadable { return o.isnull; }                   \
+  T unwrap_unsafe(Option(T) o) overloadable { return o.val; }                  \
+  T unwrap(Option(T) o) overloadable {                                         \
+    return unwrap_or(o, (T)panicx(ERR_REACHED_UNREACHABLE));                   \
   }
 
 DEF_OPTIONFN(char)
@@ -37,9 +42,9 @@ test(Null) {
 
 test(unwrap_or) {
   Option(size_t) o = Null(size_t);
-  expecteq(unwrap_or(o, 42), 42);
+  expecteq(42, unwrap_or(o, 42));
   o = Some((size_t)99);
-  expecteq(unwrap_or(o, 42), 99);
+  expecteq(99, unwrap_or(o, 42));
 }
 
 test(unwrap_unsafe) {
