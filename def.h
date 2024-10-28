@@ -20,6 +20,7 @@
   ({ malloc(sizeof(type) * size) orelse p$panic(ERR_ALLOC_FAILED); })
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
+#define orelse ?:
 
 typedef char *str;
 

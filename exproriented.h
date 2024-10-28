@@ -18,7 +18,6 @@
 
 #define $if(cond) (cond) ?
 #define $else :
-#define orelse ?:
 #define $(statements)                                                          \
   ({                                                                           \
     statements;                                                                \
