@@ -1,5 +1,8 @@
 // Add more error codes as needed
 #pragma once
+#include "def.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef enum {
   ERR_SUCCESS = 0,
@@ -8,5 +11,11 @@ typedef enum {
   ERR_RETRY = -1,
 } errcode_t;
 
+#define panic(e)                                                               \
+  do {                                                                         \
+    printf("Panicked at " HERE " ");                                           \
+    puts(codetomsg(e));                                                        \
+    exit(1);                                                                   \
+  } while (0)
+
 const char *codetomsg(int);
-void panic(int);

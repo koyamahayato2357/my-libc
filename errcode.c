@@ -1,8 +1,5 @@
 // Add more error codes as needed
 #include "errcode.h"
-#include "def.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 const char *codetomsg(int code) {
   switch (code) {
@@ -15,10 +12,4 @@ const char *codetomsg(int code) {
   default:
     return "";
   }
-}
-
-[[noreturn]] void panic(int e) {
-  printf("Panicked at " HERE);
-  puts(codetomsg(e));
-  exit(e);
 }
