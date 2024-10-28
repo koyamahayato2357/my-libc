@@ -1,69 +1,22 @@
 #pragma once
 #include "errcode.h"
 
-#define breakx                                                                 \
-  ({                                                                           \
-    break;                                                                     \
-    0UL;                                                                       \
-  })
-#define continuex                                                              \
-  ({                                                                           \
-    continue;                                                                  \
-    0UL;                                                                       \
-  })
-#define returnx(a)                                                             \
-  ({                                                                           \
-    return a;                                                                  \
-    0UL                                                                        \
-  })
-#undef unreachable // builtin macro
-#define unreachable                                                            \
-  ({                                                                           \
-    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
-    0UL;                                                                       \
-  })
-#define panicx(e)                                                              \
-  ({                                                                           \
-    panic(e);                                                                  \
-    0UL;                                                                       \
-  })
-#define throwx(e)                                                              \
-  ({                                                                           \
-    throw(e);                                                                  \
-    0UL;                                                                       \
-  })
+#define $break $(break)
+#define $continue $(continue)
+#define $return(a) $(return a)
+#define $unreachable                                                           \
+  $(longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE))
+#define $panic(e) $(panic(e))
+#define $throw(e) $(throw(e))
 
 // use in pointer calculation
-#define pbreakx                                                                \
-  ({                                                                           \
-    break;                                                                     \
-    (void *)0;                                                                 \
-  })
-#define pcontinuex                                                             \
-  ({                                                                           \
-    continue;                                                                  \
-    (void *)0;                                                                 \
-  })
-#define preturnx(a)                                                            \
-  ({                                                                           \
-    return a;                                                                  \
-    (void *)0                                                                  \
-  })
-#define punreachable                                                           \
-  ({                                                                           \
-    longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE);    \
-    (void *)0;                                                                 \
-  })
-#define ppanicx(e)                                                             \
-  ({                                                                           \
-    panic(e);                                                                  \
-    (void *)0;                                                                 \
-  })
-#define pthrowx(e)                                                             \
-  ({                                                                           \
-    throw(e);                                                                  \
-    (void *)0;                                                                 \
-  })
+#define p$break p$(break)
+#define p$continue p$(continue)
+#define p$return(a) p$(return a)
+#define p$unreachable                                                          \
+  p$(longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE))
+#define p$panic(e) p$(panic(e))
+#define p$throw(e) p$(throw(e))
 
 #define ifx(cond) (cond) ?
 #define elsex :
@@ -76,5 +29,5 @@
 #define p$(statements)                                                         \
   ({                                                                           \
     statements;                                                                \
-    (void *)0                                                                  \
+    (void *)0;                                                                 \
   })

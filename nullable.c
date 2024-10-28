@@ -13,7 +13,7 @@
   bool isnull(Option(T) o) overloadable { return o.isnull; }                   \
   T unwrap_unsafe(Option(T) o) overloadable { return o.val; }                  \
   T unwrap(Option(T) o) overloadable {                                         \
-    return unwrap_or(o, (T)panicx(ERR_REACHED_UNREACHABLE));                   \
+    return unwrap_or(o, (T)$panic(ERR_REACHED_UNREACHABLE));                   \
   }
 
 APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)

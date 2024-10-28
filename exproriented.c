@@ -17,22 +17,22 @@
 test(in_expr) {
   int i = 0;
   for (;;) {
-    int j [[maybe_unused]] = ifx(i == 1) 1 elsex breakx;
+    int j [[maybe_unused]] = ifx(i == 1) 1 elsex $break;
     testing_unreachable;
   }
   for (int i = 0; i < 5; i++) {
-    int j [[maybe_unused]] = continuex;
+    int j [[maybe_unused]] = $continue;
     testing_unreachable;
   }
 }
 
 test(in_statement) {
   for (;;) {
-    breakx;
+    $break;
     testing_unreachable;
   }
   for (int i = 0; i < 5; i++) {
-    continuex;
+    $continue;
     testing_unreachable;
   }
 }
