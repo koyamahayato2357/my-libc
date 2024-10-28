@@ -31,5 +31,8 @@ test(ansi_escape_sequence) {
   puts(ESCBMGN "hello" ESCLR);
   puts(ESCBCYN "hello" ESCLR);
   puts(ESCBBLK "hello" ESCLR);
+
+  puts(ESCCODE(100) "hello" ESCLR);
+  puts(ESCCODE_RGB(100, 100, 100) "hello" ESCLR);
 }
 #endif
