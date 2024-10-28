@@ -6,7 +6,7 @@
 #define dropStringList ondrop(deleteStringList)
 
 typedef struct {
-  enableList;
+  ListDeclare;
   Vector(char) v;
 } StringList;
 
