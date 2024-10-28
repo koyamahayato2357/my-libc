@@ -4,8 +4,7 @@
 #define $break $(break)
 #define $continue $(continue)
 #define $return(a) $(return a)
-#define $unreachable                                                           \
-  $(longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE))
+#define $unreachable $(unreachable)
 #define $panic(e) $(panic(e))
 #define $throw(e) $(throw(e))
 
@@ -13,8 +12,7 @@
 #define p$break p$(break)
 #define p$continue p$(continue)
 #define p$return(a) p$(return a)
-#define p$unreachable                                                          \
-  p$(longjmp(EXCEPTION_H_jb[EXCEPTION_H_nest - 1], ERR_REACHED_UNREACHABLE))
+#define p$unreachable p$(unreachable)
 #define p$panic(e) p$(panic(e))
 #define p$throw(e) p$(throw(e))
 
