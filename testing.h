@@ -1,4 +1,5 @@
 #pragma once
+#include "ansiesc.h"
 #include "errcode.h"
 #include "exception.h"
 #include "gene.h"
@@ -14,19 +15,19 @@ extern int TESTING_H_fail;
   __attribute__((constructor)) void TESTING_H_testrunner##name() {             \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
     jmp_buf jb [[maybe_unused]];                                               \
-    printf("\033[34mTesting\033[0m " #name "...");                             \
+    printf(ESCBLU "Testing " ESCLR #name "...");                               \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
-    printf("\033[2m=> ");                                                      \
+    printf(ESTHN "=> ");                                                       \
     if (setjmp(jb) == 0)                                                       \
       TESTING_H_tester##name(jb);                                              \
     else {                                                                     \
-      puts("\033[31m[NG]\033[0m");                                             \
+      puts(ESCRED "[NG]" ESCLR);                                               \
       TESTING_H_fail++;                                                        \
       return;                                                                  \
     }                                                                          \
-    puts("\033[32m[OK]\033[0m");                                               \
+    puts(ESCGRN "[OK]" ESCLR);                                                 \
     TESTING_H_success++;                                                       \
   }                                                                            \
   void TESTING_H_tester##name(jmp_buf jb [[maybe_unused]])
@@ -49,21 +50,21 @@ extern int TESTING_H_fail;
   __attribute__((constructor)) void TESTING_H_tabletester##name() {            \
     ds##name *data = cases;                                                    \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
-    printf("\033[34mTesting\033[0m " #name "...");                             \
+    printf(ESCBLU "Testing" ESCLR #name "...");                                \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
-    printf("\033[2m=> ");                                                      \
+    printf(ESTHN "=> ");                                                       \
     for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {            \
       ds##name *t = &data[i];                                                  \
       if (fn(MEMBER_NAMES(__VA_ARGS__)) != t->result) {                        \
         printf("Failed at record %zu ", i);                                    \
-        puts("\033[31m[NG]\033[0m");                                           \
+        puts(ESCRED "[NG]" ESCLR);                                             \
         TESTING_H_fail++;                                                      \
         return;                                                                \
       }                                                                        \
     }                                                                          \
-    puts("\033[32m[OK]\033[0m");                                               \
+    puts(ESCGRN "[OK]" ESCLR);                                                 \
     TESTING_H_success++;                                                       \
   }
 
@@ -95,7 +96,7 @@ extern int TESTING_H_fail;
 
 #define testing_unreachable                                                    \
   ({                                                                           \
-    puts("\033[31mReached line " HERE "\033[0m");                              \
+    puts(ESCRED "Reached line " HERE ESCLR);                                   \
     longjmp(jb, ERR_REACHED_UNREACHABLE);                                      \
     (size_t)0;                                                                 \
   })
