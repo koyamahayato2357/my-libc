@@ -24,5 +24,3 @@ overloadable bool eq(char x, char y) { return complex_eq(x, y); }
 overloadable bool eq(bool x, bool y) { return x == y; }
 overloadable bool eq(char *x, char *y) { return !strcmp(x, y); }
 overloadable bool eq(void *x, void *y) { return x == y; }
-
-#undef overloadable
