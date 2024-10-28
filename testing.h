@@ -57,8 +57,13 @@ extern int TESTING_H_fail;
     printf(ESTHN "=> ");                                                       \
     for (size_t i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {            \
       ds##name *t = &data[i];                                                  \
-      if (fn(MEMBER_NAMES(__VA_ARGS__)) != t->result) {                        \
-        printf("Failed at record %zu ", i);                                    \
+      auto result = fn(MEMBER_NAMES(__VA_ARGS__));                             \
+      if (result != t->result) {                                               \
+        printf("Record %zu expected ", i);                                     \
+        printany(t->result);                                                   \
+        printf(" found ");                                                     \
+        printany(result);                                                      \
+        putchar(' ');                                                          \
         puts(ESCRED "[NG]" ESCLR);                                             \
         TESTING_H_fail++;                                                      \
         return;                                                                \
