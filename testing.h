@@ -14,7 +14,7 @@ extern int TESTING_H_fail;
   void TESTING_H_tester##name(jmp_buf);                                        \
   __attribute__((constructor)) void TESTING_H_testrunner##name() {             \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
-    jmp_buf jb [[maybe_unused]];                                               \
+    jmp_buf jb;                                                                \
     printf(ESCBLU "Testing " ESCLR #name "...");                               \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
