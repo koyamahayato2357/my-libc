@@ -26,8 +26,4 @@
   Vector(T) _initVectorWithArray(const T *const, size_t) overloadable;         \
   void deinitVector(Vector(T) *) overloadable;
 
-DEF_VEC(int)
-DEF_VEC(char)
-DEF_VEC(size_t)
-DEF_VEC(double)
-DEF_VEC(str)
+APPLY_TYPE_GEN(DEF_VEC)

@@ -26,8 +26,4 @@
   void iterStart(Iter(T)) overloadable;                                        \
   void iterEnd(Iter(T)) overloadable;
 
-DEF_ITER(char);
-DEF_ITER(int);
-DEF_ITER(size_t);
-DEF_ITER(double);
-DEF_ITER(str);
+APPLY_TYPE_GEN(DEF_ITER)

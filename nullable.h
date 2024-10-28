@@ -1,6 +1,7 @@
 #pragma once
 #include "def.h"
 #include "exproriented.h"
+#include "gene.h"
 #include <stdio.h>
 
 #define NULLABLE_H_OPTIONT Option
@@ -24,8 +25,4 @@
   }
 #define unwrap_or(o, default) (ifx(isnull(o)) default elsex unwrap_unsafe(o))
 
-DEF_OPTIONAL(char);
-DEF_OPTIONAL(int);
-DEF_OPTIONAL(double);
-DEF_OPTIONAL(size_t);
-DEF_OPTIONAL(str);
+APPLY_TYPE_GEN(DEF_OPTIONAL)

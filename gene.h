@@ -6,10 +6,9 @@
   void printany(T) overloadable;                                               \
   bool eq(T, T) overloadable;
 
-DEF_GEN(int)
-DEF_GEN(size_t)
-DEF_GEN(double)
-DEF_GEN(char)
-DEF_GEN(bool)
-DEF_GEN(char *)
-DEF_GEN(void *)
+#define APPLY_TYPE_GEN(M) M(int) M(size_t) M(double) M(char) M(bool)
+#define APPLY_POINTER_GEN(M)                                                   \
+  M(int *) M(size_t *) M(double *) M(char *) M(bool *) M(void *)
+
+APPLY_TYPE_GEN(DEF_GEN)
+APPLY_POINTER_GEN(DEF_GEN)

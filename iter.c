@@ -17,11 +17,7 @@
   void iterStart(Iter(T) iter) overloadable { iter.i = 0; }                    \
   void iterEnd(Iter(T) iter) overloadable { iter.i = iter.len; }
 
-DEF_ITERFN(char)
-DEF_ITERFN(int)
-DEF_ITERFN(size_t)
-DEF_ITERFN(double)
-DEF_ITERFN(str)
+APPLY_TYPE_GEN(DEF_ITERFN)
 
 test(next) {
   Iter(char) iter = initIterWithArray("hello world!");
