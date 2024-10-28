@@ -8,7 +8,7 @@ typedef struct List {
 } List;
 
 #define LIST_MEMBER ll
-#define enableList List LIST_MEMBER
+#define ListDeclare List LIST_MEMBER
 #define List(T) List##T
 
 #define container_of(ptr, type, member)                                        \

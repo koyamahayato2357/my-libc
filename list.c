@@ -2,7 +2,7 @@
 #include "testing.h"
 
 typedef struct {
-  enableList;
+  ListDeclare;
   int val;
 } sample;
 
