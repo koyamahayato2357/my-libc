@@ -15,7 +15,7 @@ extern int TESTING_H_fail;
   __attribute__((constructor)) void TESTING_H_testrunner##name() {             \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
     jmp_buf jb;                                                                \
-    printf(ESCBLU "Testing " ESCLR #name "...");                               \
+    printf(ESCBLU "Testing " ESCLR ESBLD #name ESCLR "...");                   \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
@@ -50,7 +50,7 @@ extern int TESTING_H_fail;
   __attribute__((constructor)) void TESTING_H_tabletester##name() {            \
     ds##name *data = cases;                                                    \
     int TESTING_H_COL = 3 - (strlen(#name) + 3) / 8;                           \
-    printf(ESCBLU "Testing" ESCLR #name "...");                                \
+    printf(ESCBLU "Testing " ESCLR ESBLD #name ESCLR "...");                   \
     fflush(stdout);                                                            \
     for (int TESTING_H_i = 0; TESTING_H_i < TESTING_H_COL; TESTING_H_i++)      \
       putchar('\t');                                                           \
@@ -80,12 +80,10 @@ extern int TESTING_H_fail;
 #endif
 
 #define expect(cond)                                                           \
-  do                                                                           \
-    if (!(cond)) {                                                             \
-      printf("Failed at " HERE " %s ", #cond);                                 \
-      longjmp(jb, 1);                                                          \
-    }                                                                          \
-  while (0)
+  if (!(cond)) {                                                               \
+    puts("Failed at " HERE " " #cond " ");                                     \
+    longjmp(jb, 1);                                                            \
+  }
 
 #define expecteq(lhs, rhs)                                                     \
   do {                                                                         \
