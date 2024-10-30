@@ -3,46 +3,48 @@
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  overloadable void expand(Vector(T) * vec) {                                  \
-    if (vec->cap >= vec->len + 1)                                              \
+  void expand(Vector(T) * vec) overloadable {                                  \
+    if (VectorCap(*vec) >= VectorLen(*vec) + 1)                                \
       return;                                                                  \
-    vec->buf = realloc(vec->buf, vec->cap * 2);                                \
-    vec->cap *= 2;                                                             \
+    VectorCap(*vec) *= 2;                                                      \
+    *vec = realloc(*vec, VectorCap(*vec));                                     \
   }                                                                            \
-  overloadable void push_unsafe(Vector(T) * vec, T v) {                        \
-    vec->buf[vec->len++] = v;                                                  \
+  void push_unsafe(Vector(T) * vec, T v) overloadable {                        \
+    VectorBuf(*vec)[VectorLen(*vec)++] = v;                                    \
   }                                                                            \
-  overloadable void push(Vector(T) * vec, T v) {                               \
+  void push(Vector(T) * vec, T v) overloadable {                               \
     expand(vec);                                                               \
     push_unsafe(vec, v);                                                       \
   }                                                                            \
-  overloadable void shrink(Vector(T) * vec) {                                  \
-    if (vec->len * 4 > vec->cap)                                               \
+  void shrink(Vector(T) * vec) overloadable {                                  \
+    if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
-    vec->buf = realloc(vec->buf, vec->cap / 2);                                \
-    vec->cap /= 2;                                                             \
+    VectorCap(*vec) /= 2;                                                      \
+    *vec = realloc(*vec, VectorCap(*vec));                                     \
   }                                                                            \
-  overloadable Option(T) pop_raw(Vector(T) * vec) {                            \
-    if (vec->len == 0)                                                         \
+  Option(T) pop_raw(Vector(T) * vec) overloadable {                            \
+    if (VectorLen(*vec) == 0)                                                  \
       return Null(T);                                                          \
-    return Some(vec->buf[--(vec->len)]);                                       \
+    return Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                         \
   }                                                                            \
-  overloadable Option(T) pop(Vector(T) * vec) {                                \
+  Option(T) pop(Vector(T) * vec) overloadable {                                \
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
-  overloadable void resize(Vector(T) * vec, size_t n) {                        \
-    vec->buf = realloc(vec->buf, n);                                           \
+  void resize(Vector(T) * vec, size_t n) overloadable {                        \
+    *vec = realloc(VectorBuf(*vec), n + 8);                                    \
   }                                                                            \
-  overloadable Vector(T) _initVectorWithArray(const T *const a, size_t len) {  \
-    size_t cap = bigger(len * 1.5, DEFAULT_VECCAP);                            \
-    T *buf = galloc(T, cap);                                                   \
-    memcpy(buf, a, len);                                                       \
-    return (Vector(T)){cap, len, buf};                                         \
+  Vector(T) _initVectorWithArray(const T *const a, size_t len) overloadable {  \
+    Vector(T) vec = initVector(T);                                             \
+    size_t cap = bigger(len * 1.5, DEFAULT_VECCAP + METADATA_OFFSET);          \
+    VectorCap(vec) = cap;                                                      \
+    VectorLen(vec) = len;                                                      \
+    memcpy(VectorBuf(vec), a, len);                                            \
+    return vec;                                                                \
   }                                                                            \
   overloadable void deinitVector(Vector(T) * vec) {                            \
     /* for drop */                                                             \
-    free(vec->buf);                                                            \
+    free(*vec);                                                                \
   }
 
 APPLY_PRIMITIVE_TYPES(DEF_VECFN)
@@ -53,16 +55,16 @@ test(push) {
   push(&vec, 'b');
   push(&vec, 'c');
   push(&vec, 'd');
-  expecteq(vec.buf[0], 'a');
-  expecteq(vec.buf[1], 'b');
-  expecteq(vec.buf[2], 'c');
-  expecteq(vec.buf[3], 'd');
+  expecteq(VectorBuf(vec)[0], 'a');
+  expecteq(VectorBuf(vec)[1], 'b');
+  expecteq(VectorBuf(vec)[2], 'c');
+  expecteq(VectorBuf(vec)[3], 'd');
   deinitVector(&vec);
 }
 
 test(pop) {
   Vector(char) vec = initVectorWithArray("hello world");
-  expecteq(vec.len, strlen("hello world") + 1);
+  expecteq(VectorLen(vec), strlen("hello world") + 1);
 
   expecteq(unwrap(pop(&vec)), '\0');
   expecteq(unwrap(pop(&vec)), 'd');
@@ -77,10 +79,10 @@ test(expand_shrink) {
   Vector(char) vec = initVector(char);
   for (int i = 0; i < 100; i++)
     push(&vec, i);
-  expecteq(vec.cap, 128);
+  expecteq(VectorCap(vec), 128);
   for (int i = 0; i < 90; i++)
     pop_raw(&vec);
   shrink(&vec);
-  expecteq(vec.cap, 64);
+  expecteq(VectorCap(vec), 64);
   deinitVector(&vec);
 }

@@ -4,26 +4,34 @@
 
 #define DEF_ITERFN(T)                                                          \
   Iter(T) _initIterWithArray(T *buf, size_t len) overloadable {                \
-    return (Iter(T)){buf, len, 0};                                             \
+    Iter(T) ret = galloc(T, len + METADATA_OFFSET);                            \
+    IterId(ret) = 0;                                                           \
+    IterLen(ret) = len;                                                        \
+    memcpy(IterBuf(ret), buf, len);                                            \
+    return ret;                                                                \
   }                                                                            \
   Iter(T) initIterWithVector(Vector(T) vec) overloadable {                     \
-    return (Iter(T)){vec.buf, vec.len, 0};                                     \
+    Iter(T) ret = galloc(T, VectorLen(vec) + METADATA_OFFSET);                 \
+    IterId(ret) = 0;                                                           \
+    IterLen(ret) = VectorLen(vec);                                             \
+    memcpy(IterBuf(ret), VectorBuf(vec), VectorLen(vec));                      \
+    return ret;                                                                \
   }                                                                            \
   Option(T) next(Iter(T) * iter) overloadable {                                \
-    if (iter->len <= iter->i)                                                  \
+    if (IterLen(*iter) <= IterId(*iter))                                       \
       return Null(T);                                                          \
-    return Some(iter->buf[iter->i++]);                                         \
+    return Some(IterBuf(*iter)[IterId(*iter)++]);                              \
   }                                                                            \
-  void iterStart(Iter(T) iter) overloadable { iter.i = 0; }                    \
-  void iterEnd(Iter(T) iter) overloadable { iter.i = iter.len; }
+  void iterStart(Iter(T) iter) overloadable { IterId(iter) = 0; }              \
+  void iterEnd(Iter(T) iter) overloadable { IterId(iter) = IterLen(iter); }
 
 APPLY_PRIMITIVE_TYPES(DEF_ITERFN)
 
 test(next) {
   Iter(char) iter = initIterWithArray("hello world!");
-  expect(!strcmp("hello world!", iter.buf));
+  expect(!strcmp("hello world!", IterBuf(iter)));
   expecteq(unwrap(next(&iter)), 'h');
-  iter.i = iter.len - 1;
+  IterId(iter) = IterLen(iter) - 1;
   expecteq(unwrap(next(&iter)), '\0');
   expect(isnull(next(&iter)));
 }
@@ -33,8 +41,8 @@ test(foreach) {
       initIterWithArray("You don't come to Russia, Russia come to you.");
   size_t i = 0;
   foreach (iter, item)
-    expecteq(item, iter.buf[i++]);
-  expecteq(iter.i, iter.len);
+    expecteq(item, IterBuf(iter)[i++]);
+  expecteq(IterId(iter), IterLen(iter));
   expect(isnull(next(&iter)));
 }
 
@@ -43,6 +51,6 @@ test(initwith_vector) {
   Iter(char) iter = initIterWithVector(vec);
   int i = 0;
   foreach (iter, item)
-    expecteq(item, vec.buf[i++]);
+    expecteq(item, VectorBuf(vec)[i++]);
   deinitVector(&vec);
 }

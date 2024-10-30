@@ -3,19 +3,23 @@
 #include "nullable.h"
 #include <stdio.h>
 
-#define VECTOR_H_VECTOR Vector
+#define METADATA_OFFSET 8
 #define DEFAULT_VECCAP 32
-#define Vector(T) VECTOR_H_VECTOR##T
+#define Vector(T) T *
 #define initVector(T)                                                          \
-  (Vector(T)) { DEFAULT_VECCAP, 0, galloc(T, DEFAULT_VECCAP) }
-#define initVectorWithArray(a) _initVectorWithArray(a, sizeof(a));
+  ({                                                                           \
+    Vector(T) vec = galloc(T, DEFAULT_VECCAP);                                 \
+    VectorCap(vec) = DEFAULT_VECCAP;                                           \
+    VectorLen(vec) = 0;                                                        \
+    vec;                                                                       \
+  })
+#define VectorLen(vec) ((int *)vec)[0]
+#define VectorCap(vec) ((int *)vec)[1]
+#define VectorBuf(vec) ((vec) + 8 / sizeof((vec)[0]) + 1)
+#define initVectorWithArray(...)                                               \
+  _initVectorWithArray(__VA_ARGS__, sizeof(__VA_ARGS__));
 
 #define DEF_VEC(T)                                                             \
-  typedef struct {                                                             \
-    int cap /* unit: bytes */;                                                 \
-    int len /* unit: bytes */;                                                 \
-    T *buf;                                                                    \
-  } Vector(T);                                                                 \
   void expand(Vector(T) *) overloadable;                                       \
   void push_unsafe(Vector(T) *, T) overloadable;                               \
   void push(Vector(T) *, T) overloadable;                                      \

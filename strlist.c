@@ -2,8 +2,7 @@
 #include "testing.h"
 
 StringList *_initStringList(char *buf, size_t len) {
-  StringList *ret =
-      initList(StringList, _initVectorWithArray(buf, len), v);
+  StringList *ret = initList(StringList, _initVectorWithArray(buf, len), v);
   return ret;
 }
 
@@ -14,12 +13,12 @@ overloadable void append(StringList *sl, char *buf) {
 
 char *toString(const StringList *const sl) {
   size_t len = 0;
-  foreach_List(sl, item) len += item->v.len;
+  foreach_List(sl, item) len += VectorLen(item->v);
   char *ret = galloc(char, len);
   size_t offset = 0;
   foreach_List(sl, item) {
-    memcpy(ret + offset, item->v.buf, item->v.len - 1);
-    offset += item->v.len - 1;
+    memcpy(ret + offset, VectorBuf(item->v), VectorLen(item->v) - 1);
+    offset += VectorLen(item->v) - 1;
   }
   return ret;
 }
@@ -31,10 +30,10 @@ void deleteStringList(StringList **sl) {
 
 test(initstrlist) {
   dropStringList StringList *sl = initStringList("hello world!");
-  expecteq("hello world!", sl->v.buf);
+  expecteq("hello world!", VectorBuf(sl->v));
   append(sl, "hello");
   StringList *prevsl = container_of(sl->ll.prev, StringList, ll);
-  expecteq("hello", prevsl->v.buf);
+  expecteq("hello", VectorBuf(prevsl->v));
 }
 
 test(tostring) {
