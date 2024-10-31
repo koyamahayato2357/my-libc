@@ -1,3 +1,14 @@
+/*
+ * first 8 byte are meta data
+ *
+ * | leading-address
+ * ----------------------------------------------------------------------------
+ * | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3
+ * ----------------------------------------------------------------------------
+ * | (int) length  | (int) capa    | data
+ *
+ */
+
 #pragma once
 #include "def.h"
 #include "nullable.h"
@@ -15,7 +26,7 @@
   })
 #define VectorLen(vec) ((int *)vec)[0]
 #define VectorCap(vec) ((int *)vec)[1]
-#define VectorBuf(vec) ((vec) + 8 / sizeof((vec)[0]) + 1)
+#define VectorBuf(vec) ((vec) + 8 / sizeof((vec)[0]))
 #define initVectorWithArray(...)                                               \
   _initVectorWithArray(__VA_ARGS__, sizeof(__VA_ARGS__));
 

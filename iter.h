@@ -1,3 +1,14 @@
+/**
+ * first 8 byte are meta data
+ *
+ * | leading-address
+ * ----------------------------------------------------------------------------
+ * | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3
+ * ----------------------------------------------------------------------------
+ * | (int) length  | (int) index   | data
+ *
+ */
+
 #pragma once
 #include "def.h"
 #include "nullable.h"
@@ -12,7 +23,7 @@
 #define Iter(T) T *
 #define IterLen(iter) ((int *)iter)[0]
 #define IterId(iter) ((int *)iter)[1]
-#define IterBuf(iter) ((iter) + METADATA_OFFSET / sizeof((iter)[0]) + 1)
+#define IterBuf(iter) ((iter) + METADATA_OFFSET / sizeof((iter)[0]))
 
 #define foreach(iter, item)                                                    \
   for (auto item = IterBuf(iter)[IterId(iter)]; IterId(iter) < IterLen(iter);  \
