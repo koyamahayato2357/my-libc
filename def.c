@@ -6,6 +6,11 @@
 void free4drop(void *pp) { free(*(void **)pp); }
 // <!DANGER!> Don't call except drop
 
+// greater realloc
+void *grealloc(void *old, size_t sz) {
+  return realloc(old, sz) orelse p$panic(ERR_ALLOC_FAILED);
+}
+
 test(leak) { drop void *p = malloc(100); }
 
 test(galloc) {

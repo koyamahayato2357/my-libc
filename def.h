@@ -24,3 +24,4 @@
 #define orelse ?:
 
 void free4drop(void *);
+void *grealloc(void *, size_t);
