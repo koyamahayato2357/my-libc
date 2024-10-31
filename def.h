@@ -1,6 +1,7 @@
 #pragma once
 #include "errcode.h"
 #include "exproriented.h"
+#include <stdio.h>
 
 #define CAT(a, b) a##b
 #define TOSTR(x) #x
@@ -21,7 +22,5 @@
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
 #define orelse ?:
-
-typedef char *str;
 
 void free4drop(void *);
