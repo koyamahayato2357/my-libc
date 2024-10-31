@@ -7,7 +7,7 @@ all-test:
 	./a.out
 
 debug:
-	clang -std=c23 -DTEST_MODE *.c -g -Wall -Wextra
+	clang -std=c23 -DTEST_MODE *.c -g3 -Wall -Wextra
 
 analyze:
 	clang-tidy *.c -- -std=c23 -DTEST_MODE -Wall -Wextra -fsanitize=address
