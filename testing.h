@@ -1,7 +1,6 @@
 #pragma once
 #include "ansiesc.h"
 #include "errcode.h"
-#include "exception.h"
 #include "gene.h"
 #include <setjmp.h>
 #include <stdio.h>

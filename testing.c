@@ -1,5 +1,4 @@
 #include "testing.h"
-#include "ansiesc.h"
 
 #ifdef TEST_MODE
 #undef main
