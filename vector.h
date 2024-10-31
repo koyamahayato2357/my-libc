@@ -26,7 +26,7 @@
   })
 #define VectorLen(vec) ((int *)vec)[0]
 #define VectorCap(vec) ((int *)vec)[1]
-#define VectorBuf(vec) ((vec) + 8 / sizeof((vec)[0]))
+#define VectorBuf(vec) ((vec) + METADATA_OFFSET / sizeof((vec)[0]))
 #define initVectorWithArray(...)                                               \
   _initVectorWithArray(__VA_ARGS__, sizeof(__VA_ARGS__));
 

@@ -1,7 +1,7 @@
 /**
  * first 8 byte are meta data
  *
- * | leading-address
+ * | leading-address                                               |
  * ----------------------------------------------------------------------------
  * | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3
  * ----------------------------------------------------------------------------
@@ -17,21 +17,34 @@
 #define METADATA_OFFSET 8
 
 #define initIterWithArray(buf)                                                 \
-  _initIterWithArray(buf, sizeof(buf) / sizeof(buf[0]))
+  ({                                                                           \
+    typeof(buf) ret[2] = {};                                                   \
+    Iter(typeof(buf[0])) iter = (typeof(buf[0]) **)ret;                        \
+    IterLen(iter) = sizeof(buf) / sizeof(buf[0]);                              \
+    IterId(iter) = 0;                                                          \
+    IterBuf(iter) = buf;                                                       \
+    iter;                                                                      \
+  })
+#define initIterWithVector(vec)                                                \
+  ({                                                                           \
+    typeof(VectorBuf(vec)) ret[2] = {};                                        \
+    Iter(typeof(VectorBuf(vec)[0])) iter = (typeof(VectorBuf(vec)[0]) **)ret;  \
+    IterLen(iter) = VectorLen(vec);                                            \
+    IterId(iter) = 0;                                                          \
+    IterBuf(iter) = VectorBuf(vec);                                            \
+    iter;                                                                      \
+  })
 
-#define Iter(T) T *
+#define Iter(T) T **
 #define IterLen(iter) ((int *)iter)[0]
 #define IterId(iter) ((int *)iter)[1]
-#define IterBuf(iter)                                                          \
-  (*(typeof(iter) *)((iter) + METADATA_OFFSET / sizeof((iter)[0])))
+#define IterBuf(iter) (iter)[1]
 
 #define foreach(iter, item)                                                    \
   for (auto item = IterBuf(iter)[IterId(iter)]; IterId(iter) < IterLen(iter);  \
        item = IterBuf(iter)[++IterId(iter)])
 
 #define DEF_ITER(T)                                                            \
-  Iter(T) _initIterWithArray(T *buf) overloadable;                             \
-  Iter(T) initIterWithVector(Vector(T)) overloadable;                          \
   Option(T) next(Iter(T) * iter) overloadable;                                 \
   void iterStart(Iter(T)) overloadable;                                        \
   void iterEnd(Iter(T)) overloadable;

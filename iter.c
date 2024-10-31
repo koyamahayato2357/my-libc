@@ -3,20 +3,6 @@
 #include "testing.h"
 
 #define DEF_ITERFN(T)                                                          \
-  Iter(T) _initIterWithArray(T *buf, size_t len) overloadable {                \
-    Iter(T) ret = galloc(char, sizeof(T *) + METADATA_OFFSET);                 \
-    IterId(ret) = 0;                                                           \
-    IterLen(ret) = len;                                                        \
-    IterBuf(ret) = buf;                                                        \
-    return ret;                                                                \
-  }                                                                            \
-  Iter(T) initIterWithVector(Vector(T) vec) overloadable {                     \
-    Iter(T) ret = galloc(T, sizeof(T *) + METADATA_OFFSET);                    \
-    IterId(ret) = 0;                                                           \
-    IterLen(ret) = VectorLen(vec);                                             \
-    IterBuf(ret) = VectorBuf(vec);                                             \
-    return ret;                                                                \
-  }                                                                            \
   Option(T) next(Iter(T) * iter) overloadable {                                \
     if (IterLen(*iter) <= IterId(*iter))                                       \
       return Null(T);                                                          \
