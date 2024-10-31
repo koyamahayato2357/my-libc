@@ -4,17 +4,17 @@
 
 #define DEF_ITERFN(T)                                                          \
   Iter(T) _initIterWithArray(T *buf, size_t len) overloadable {                \
-    Iter(T) ret = galloc(T, len + METADATA_OFFSET);                            \
+    Iter(T) ret = galloc(char, sizeof(T *) + METADATA_OFFSET);                 \
     IterId(ret) = 0;                                                           \
     IterLen(ret) = len;                                                        \
-    memcpy(IterBuf(ret), buf, len);                                            \
+    IterBuf(ret) = buf;                                                        \
     return ret;                                                                \
   }                                                                            \
   Iter(T) initIterWithVector(Vector(T) vec) overloadable {                     \
-    Iter(T) ret = galloc(T, VectorLen(vec) + METADATA_OFFSET);                 \
+    Iter(T) ret = galloc(T, sizeof(T *) + METADATA_OFFSET);                    \
     IterId(ret) = 0;                                                           \
     IterLen(ret) = VectorLen(vec);                                             \
-    memcpy(IterBuf(ret), VectorBuf(vec), VectorLen(vec));                      \
+    IterBuf(ret) = VectorBuf(vec);                                             \
     return ret;                                                                \
   }                                                                            \
   Option(T) next(Iter(T) * iter) overloadable {                                \

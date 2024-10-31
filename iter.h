@@ -5,7 +5,7 @@
  * ----------------------------------------------------------------------------
  * | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 1 | 2 | 3
  * ----------------------------------------------------------------------------
- * | (int) length  | (int) index   | data
+ * | (int) length  | (int) index   | pointer to data array         |
  *
  */
 
@@ -13,7 +13,6 @@
 #include "def.h"
 #include "nullable.h"
 #include "vector.h"
-#include <stdio.h>
 
 #define METADATA_OFFSET 8
 
@@ -23,7 +22,8 @@
 #define Iter(T) T *
 #define IterLen(iter) ((int *)iter)[0]
 #define IterId(iter) ((int *)iter)[1]
-#define IterBuf(iter) ((iter) + METADATA_OFFSET / sizeof((iter)[0]))
+#define IterBuf(iter)                                                          \
+  (*(typeof(iter) *)((iter) + METADATA_OFFSET / sizeof((iter)[0])))
 
 #define foreach(iter, item)                                                    \
   for (auto item = IterBuf(iter)[IterId(iter)]; IterId(iter) < IterLen(iter);  \
