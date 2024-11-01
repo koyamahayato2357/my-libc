@@ -1,7 +1,7 @@
 #pragma once
 #include "errcode.h"
 #include "exproriented.h"
-#include <stdio.h>
+#include <stddef.h>
 
 #define CAT(a, b) a##b
 #define TOSTR(x) #x
