@@ -22,6 +22,12 @@
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
 #define orelse ?:
+#define swap(a, b)                                                             \
+  do {                                                                         \
+    typeof(a) temp = a;                                                        \
+    a = b;                                                                     \
+    b = temp;                                                                  \
+  } while (0)
 
 void free4drop(void *);
 void *grealloc(void *, size_t);
