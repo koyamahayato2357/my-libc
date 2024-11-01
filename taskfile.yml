@@ -1,0 +1,16 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - clang -std=c23 -DTEST_MODE *.c -Wall -Wextra
+      - ./a.out
+  all-test:
+    cmds:
+      - clang -std=c23 -DTEST_MODE -DTEST_MODE_ALL *.c -Wall -Wextra
+  debug:
+    cmds:
+      - clang -std=c23 -DTEST_MODE *.c -g3 -Wall -Wextra
+  analyze:
+    cmds:
+      - clang-tidy *.c -- -std=c23 -DTEST_MODE -Wall -Wextra -fsanitize=address
