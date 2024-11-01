@@ -35,11 +35,6 @@
 
 #include "exception.h"
 #include "testing.h"
-#ifdef TEST_MODE
-#include "errcode.h"
-#include <stdio.h>
-#include <stdlib.h>
-#endif
 
 jmp_buf EXCEPTION_H_jb[MAX_NEST_DEPTH];
 int EXCEPTION_H_errcode;
@@ -65,7 +60,7 @@ test(exception) {
     }
   }
   try _throw();
-  catchor(2) testing_unreachable;
+  catchor(0b1110) testing_unreachable;
   int i = 0;
   try _throw();
   catchany {

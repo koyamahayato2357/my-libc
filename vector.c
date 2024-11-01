@@ -23,9 +23,8 @@
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   Option(T) pop_raw(Vector(T) * vec) overloadable {                            \
-    if (VectorLen(*vec) == 0)                                                  \
-      return Null(T);                                                          \
-    return Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                         \
+    return $if(VectorLen(*vec) == 0) Null(T)                                   \
+        $else Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                      \
   }                                                                            \
   Option(T) pop(Vector(T) * vec) overloadable {                                \
     shrink(vec);                                                               \

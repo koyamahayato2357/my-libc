@@ -4,9 +4,8 @@
 
 #define DEF_ITERFN(T)                                                          \
   Option(T) next(Iter(T) * iter) overloadable {                                \
-    if (IterLen(*iter) <= IterId(*iter))                                       \
-      return Null(T);                                                          \
-    return Some(IterBuf(*iter)[IterId(*iter)++]);                              \
+    return $if(IterLen(*iter) <= IterId(*iter)) Null(T)                        \
+        $else Some(IterBuf(*iter)[IterId(*iter)++]);                           \
   }                                                                            \
   void iterStart(Iter(T) iter) overloadable { IterId(iter) = 0; }              \
   void iterEnd(Iter(T) iter) overloadable { IterId(iter) = IterLen(iter); }
@@ -15,7 +14,7 @@ APPLY_PRIMITIVE_TYPES(DEF_ITERFN)
 
 test(next) {
   Iter(char) iter = initIterWithArray("hello world!");
-  expect(!strcmp("hello world!", IterBuf(iter)));
+  expecteq("hello world!", IterBuf(iter));
   expecteq(unwrap(next(&iter)), 'h');
   IterId(iter) = IterLen(iter) - 1;
   expecteq(unwrap(next(&iter)), '\0');
