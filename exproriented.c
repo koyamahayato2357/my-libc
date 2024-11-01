@@ -1,13 +1,13 @@
 /*
  * Usage
  * ----------------------------------------------------------------------------
- * if expression         | puts(ifx(lhs == rhs) "equal" elsex "not equal");
+ * if expression         | puts($if(lhs == rhs) "equal" $else "not equal");
  * ----------------------------------------------------------------------------
- * break expression      | p = next() orelse breakx;
+ * break expression      | p = next() orelse $break;
  * ----------------------------------------------------------------------------
- * continue expression   | is_validinput(input) orelse continuex;
+ * continue expression   | is_validinput(input) orelse $continue;
  * ----------------------------------------------------------------------------
- * return expression     | char *homedir = getenv("HOME") orelse preturnx(-1);
+ * return expression     | char *homedir = getenv("HOME") orelse p$return(-1);
  * ----------------------------------------------------------------------------
  */
 
