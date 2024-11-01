@@ -21,7 +21,6 @@
     typeof(buf) ret[2] = {};                                                   \
     Iter(typeof(buf[0])) iter = (typeof(buf[0]) **)ret;                        \
     IterLen(iter) = sizeof(buf) / sizeof(buf[0]);                              \
-    IterId(iter) = 0;                                                          \
     IterBuf(iter) = buf;                                                       \
     iter;                                                                      \
   })
@@ -30,7 +29,6 @@
     typeof(VectorBuf(vec)) ret[2] = {};                                        \
     Iter(typeof(VectorBuf(vec)[0])) iter = (typeof(VectorBuf(vec)[0]) **)ret;  \
     IterLen(iter) = VectorLen(vec);                                            \
-    IterId(iter) = 0;                                                          \
     IterBuf(iter) = VectorBuf(vec);                                            \
     iter;                                                                      \
   })
