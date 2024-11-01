@@ -50,3 +50,5 @@
 #define ESHVP(n, m) ESCSI #n ";" #m "f"
 #define ESSCP ESCSI "s"
 #define ESRCP ESCSI "u"
+
+void putsequence(char *);

@@ -1,4 +1,7 @@
-// test framework output is corrupted (;_;)
+#include <stdio.h>
+
+void putsequence(char *seq) { fputs(seq, stdout); }
+
 #ifdef TEST_MODE_ALL
 #include "ansiesc.h"
 #include "testing.h"
