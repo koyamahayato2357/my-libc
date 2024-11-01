@@ -28,6 +28,8 @@
     a = b;                                                                     \
     b = temp;                                                                  \
   } while (0)
+#define likely(cond) if (__builtin_expect(!!(cond), 1))
+#define unlikely(cond) if (__builtin_expect(!!(cond), 0))
 
 void free4drop(void *);
 void *grealloc(void *, size_t);
