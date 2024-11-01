@@ -42,7 +42,7 @@
     memcpy(VectorBuf(vec), a, len);                                            \
     return vec;                                                                \
   }                                                                            \
-  overloadable void deinitVector(Vector(T) * vec) {                            \
+  void deinitVector(Vector(T) * vec) overloadable {                            \
     /* for drop */                                                             \
     free(*vec);                                                                \
   }

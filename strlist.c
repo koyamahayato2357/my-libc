@@ -6,9 +6,8 @@ StringList *_initStringList(char *buf, size_t len) {
   return ret;
 }
 
-overloadable void append(StringList *sl, char *buf) {
-  Vector(char) new = initVectorWithArray(buf);
-  appendList(sl, new, v);
+void append(StringList *sl, char *buf) overloadable {
+  appendList(sl, initVectorWithArray(buf), v);
 }
 
 char *toString(const StringList *const sl) {
