@@ -7,7 +7,7 @@
     if (VectorCap(*vec) >= VectorLen(*vec) + 1)                                \
       return;                                                                  \
     VectorCap(*vec) *= 2;                                                      \
-    *vec = grealloc(*vec, VectorCap(*vec));                                     \
+    *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   void push_unsafe(Vector(T) * vec, T v) overloadable {                        \
     VectorBuf(*vec)[VectorLen(*vec)++] = v;                                    \
@@ -20,7 +20,7 @@
     if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
     VectorCap(*vec) /= 2;                                                      \
-    *vec = grealloc(*vec, VectorCap(*vec));                                     \
+    *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   Option(T) pop_raw(Vector(T) * vec) overloadable {                            \
     if (VectorLen(*vec) == 0)                                                  \
@@ -32,7 +32,7 @@
     return pop_raw(vec);                                                       \
   }                                                                            \
   void resize(Vector(T) * vec, size_t n) overloadable {                        \
-    *vec = grealloc(VectorBuf(*vec), n + 8);                                    \
+    *vec = grealloc(VectorBuf(*vec), n + 8);                                   \
   }                                                                            \
   Vector(T) _initVectorWithArray(const T *const a, size_t len) overloadable {  \
     Vector(T) vec = initVector(T);                                             \
