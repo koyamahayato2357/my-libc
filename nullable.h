@@ -2,7 +2,6 @@
 #include "def.h"
 #include "exproriented.h"
 #include "gene.h"
-#include <stdio.h>
 
 #define NULLABLE_H_OPTIONT Option
 #define Option(T) CAT(NULLABLE_H_OPTIONT, T)

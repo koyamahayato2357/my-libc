@@ -1,6 +1,5 @@
 #pragma once
 #include "def.h"
-#include <stdio.h>
 
 #define DEF_GEN(T)                                                             \
   void printany(T) overloadable;                                               \

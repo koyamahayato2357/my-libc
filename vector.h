@@ -12,7 +12,6 @@
 #pragma once
 #include "def.h"
 #include "nullable.h"
-#include <stdio.h>
 
 #define METADATA_OFFSET 8
 #define DEFAULT_VECCAP 32
