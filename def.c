@@ -18,4 +18,6 @@ test(galloc) {
   expect(p != nullptr);
   // Terminate with error
   // char *q = galloc(long long, 0xffffffffffffffff);
+  p = grealloc(p, 10000);
+  expect(p != nullptr);
 }
