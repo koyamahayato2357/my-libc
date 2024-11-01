@@ -36,7 +36,7 @@
   }                                                                            \
   Vector(T) _initVectorWithArray(const T *const a, size_t len) overloadable {  \
     Vector(T) vec = initVector(T);                                             \
-    size_t cap = bigger(len * 1.5, DEFAULT_VECCAP + METADATA_OFFSET);          \
+    size_t cap = bigger(len + len / 2, DEFAULT_VECCAP + METADATA_OFFSET);      \
     VectorCap(vec) = cap;                                                      \
     VectorLen(vec) = len;                                                      \
     memcpy(VectorBuf(vec), a, len);                                            \
