@@ -4,7 +4,8 @@
 
 #define DEF_VECFN(T)                                                           \
   void expand(Vector(T) *const restrict vec) overloadable {                    \
-    if (VectorCap(*vec) >= VectorLen(*vec) + 1)                                \
+    if (VectorCap(*vec) >                                                      \
+        VectorLen(*vec) + METADATA_OFFSET / (int)sizeof(**vec))                \
       return;                                                                  \
     VectorCap(*vec) *= 2;                                                      \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \

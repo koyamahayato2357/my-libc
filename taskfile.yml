@@ -3,11 +3,11 @@ version: '3'
 tasks:
   default:
     cmds:
-      - clang -std=c23 -DTEST_MODE *.c -Wall -Wextra
+      - clang-18 -std=c23 -DTEST_MODE *.c -Wall -Wextra -fsanitize=undefined,address
       - ./a.out
   all-test:
     cmds:
-      - clang -std=c23 -DTEST_MODE -DTEST_MODE_ALL *.c -Wall -Wextra
+      - clang -std=c23 -DTEST_MODE -DTEST_MODE_ALL *.c -Wall -Wextra -fsanitize=undefined,address
   debug:
     cmds:
       - clang -std=c23 -DTEST_MODE *.c -g3 -Wall -Wextra
