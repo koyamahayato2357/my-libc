@@ -19,7 +19,7 @@ typedef struct List {
 
 #define initList(T, v, member)                                                 \
   ({                                                                           \
-    T *result = malloc(sizeof(T));                                             \
+    T *result = galloc(T, 1);                                                  \
     result->LIST_MEMBER.prev = &result->LIST_MEMBER;                           \
     result->LIST_MEMBER.next = &result->LIST_MEMBER;                           \
     result->member = v;                                                        \
@@ -33,7 +33,7 @@ typedef struct List {
                               LIST_MEMBER)))
 #define appendList(l, v, member)                                               \
   do {                                                                         \
-    typeof(l) _new = malloc(sizeof(typeof(*(l))));                             \
+    typeof(l) _new = galloc(typeof(*(l)), 1);                                  \
     _new->member = v;                                                          \
     _new->LIST_MEMBER.prev = (l)->LIST_MEMBER.prev;                            \
     (l)->LIST_MEMBER.prev = &_new->LIST_MEMBER;                                \
@@ -43,7 +43,7 @@ typedef struct List {
 #define insert(l, val) pass
 #define removeList(l) pass
 #define moveList(l, dir)                                                       \
-  ({ l = container_of((l)->LIST_MEMBER.dir, typeof(*(l)), LIST_MEMBER); })
+  (l = container_of((l)->LIST_MEMBER.dir, typeof(*(l)), LIST_MEMBER))
 #define nextList(l) moveList(l, next)
 #define prevList(l) moveList(l, prev)
 #define deleteList(l)                                                          \
