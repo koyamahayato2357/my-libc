@@ -56,23 +56,23 @@ test(push) {
   push(&vec, 'b');
   push(&vec, 'c');
   push(&vec, 'd');
-  expecteq(VectorBuf(vec)[0], 'a');
-  expecteq(VectorBuf(vec)[1], 'b');
-  expecteq(VectorBuf(vec)[2], 'c');
-  expecteq(VectorBuf(vec)[3], 'd');
+  expecteq('a', VectorBuf(vec)[0]);
+  expecteq('b', VectorBuf(vec)[1]);
+  expecteq('c', VectorBuf(vec)[2]);
+  expecteq('d', VectorBuf(vec)[3]);
   deinitVector(&vec);
 }
 
 test(pop) {
   Vector(char) vec = initVectorWithArray("hello world");
-  expecteq(VectorLen(vec), strlen("hello world") + 1);
+  expecteq(strlen("hello world") + 1, VectorLen(vec));
 
-  expecteq(unwrap(pop(&vec)), '\0');
-  expecteq(unwrap(pop(&vec)), 'd');
-  expecteq(unwrap(pop(&vec)), 'l');
-  expecteq(unwrap(pop(&vec)), 'r');
+  expecteq('\0', unwrap(pop(&vec)));
+  expecteq('d', unwrap(pop(&vec)));
+  expecteq('l', unwrap(pop(&vec)));
+  expecteq('r', unwrap(pop(&vec)));
   push(&vec, 'a');
-  expecteq(unwrap(pop(&vec)), 'a');
+  expecteq('a', unwrap(pop(&vec)));
   deinitVector(&vec);
 }
 
@@ -80,10 +80,10 @@ test(expand_shrink) {
   Vector(char) vec = initVector(char);
   for (int i = 0; i < 100; i++)
     push(&vec, i);
-  expecteq(VectorCap(vec), 128);
+  expecteq(128, VectorCap(vec));
   for (int i = 0; i < 90; i++)
     pop_raw(&vec);
   shrink(&vec);
-  expecteq(VectorCap(vec), 64);
+  expecteq(64, VectorCap(vec));
   deinitVector(&vec);
 }

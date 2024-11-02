@@ -26,11 +26,11 @@ test(nextlist) {
   appendList(root, 126, val);
 
   sample *n = p;
-  expect(n->val == 42);
+  expecteq(42, n->val);
   n = nextList(p);
-  expect(n->val == 84);
+  expecteq(84, n->val);
   n = nextList(p);
-  expect(n->val == 126);
+  expecteq(126, n->val);
 
   deleteList(root);
 }
