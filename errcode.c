@@ -1,7 +1,7 @@
 // Add more error codes as needed
 #include "errcode.h"
 
-const char *codetomsg(int code) {
+char const *codetomsg(int code) {
   switch (code) {
   case ERR_SUCCESS:
     return "success";

@@ -30,14 +30,15 @@
   _initVectorWithArray(__VA_ARGS__, sizeof(__VA_ARGS__));
 
 #define DEF_VEC(T)                                                             \
-  void expand(Vector(T) *) overloadable;                                       \
-  void push_unsafe(Vector(T) *, T) overloadable;                               \
-  void push(Vector(T) *, T) overloadable;                                      \
-  void shrink(Vector(T) *) overloadable;                                       \
-  Option(T) pop_raw(Vector(T) *) overloadable;                                 \
-  Option(T) pop(Vector(T) *) overloadable;                                     \
-  void resize(Vector(T) *, size_t) overloadable;                               \
-  Vector(T) _initVectorWithArray(const T *const, size_t) overloadable;         \
-  void deinitVector(Vector(T) *) overloadable;
+  void expand(Vector(T) *const restrict) overloadable;                         \
+  void push_unsafe(Vector(T) *const restrict, T) overloadable;                 \
+  void push(Vector(T) *const restrict, T) overloadable;                        \
+  void shrink(Vector(T) *const restrict) overloadable;                         \
+  Option(T) pop_raw(Vector(T) *const restrict) overloadable;                   \
+  Option(T) pop(Vector(T) *const restrict) overloadable;                       \
+  void resize(Vector(T) *const restrict, size_t) overloadable;                 \
+  Vector(T) _initVectorWithArray(T const *const restrict, size_t)              \
+      overloadable;                                                            \
+  void deinitVector(Vector(T) *const restrict) overloadable;
 
 APPLY_PRIMITIVE_TYPES(DEF_VEC)

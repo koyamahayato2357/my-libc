@@ -1,16 +1,17 @@
 #include "strlist.h"
 #include "testing.h"
 
-StringList *_initStringList(char *buf, size_t len) {
+StringList *_initStringList(char const *const restrict buf, size_t len) {
   StringList *ret = initList(StringList, _initVectorWithArray(buf, len), v);
   return ret;
 }
 
-void append(StringList *sl, char *buf) overloadable {
+void append(StringList *const restrict sl,
+            char const *const restrict buf) overloadable {
   appendList(sl, initVectorWithArray(buf), v);
 }
 
-char *toString(const StringList *const sl) {
+char *toString(StringList const *const restrict sl) {
   size_t len = 0;
   foreach_List(sl, item) len += VectorLen(item->v);
   char *ret = galloc(char, len);
@@ -22,7 +23,7 @@ char *toString(const StringList *const sl) {
   return ret;
 }
 
-void deleteStringList(StringList **sl) {
+void deleteStringList(StringList *const restrict *const restrict sl) {
   foreach_List(*sl, item) deinitVector(&item->v);
   deleteList(*sl);
 }

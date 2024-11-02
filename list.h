@@ -13,7 +13,7 @@ typedef struct List {
 
 #define container_of(ptr, type, member)                                        \
   ({                                                                           \
-    const typeof(((type *)0)->member) *mptr = ptr;                             \
+    typeof(((type *)0)->member) const *mptr = ptr;                             \
     (type *)((char *)mptr - offsetof(type, member));                           \
   })
 

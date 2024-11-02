@@ -43,7 +43,7 @@
        item = IterBuf(iter)[++IterId(iter)])
 
 #define DEF_ITER(T)                                                            \
-  Option(T) next(Iter(T) * iter) overloadable;                                 \
+  Option(T) next(Iter(T) *const restrict iter) overloadable;                   \
   void iterStart(Iter(T)) overloadable;                                        \
   void iterEnd(Iter(T)) overloadable;
 

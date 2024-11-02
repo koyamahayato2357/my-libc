@@ -11,7 +11,7 @@ extern int EXCEPTION_H_nest;
 #define EXCEPTION_H_CAT(x, y) x##y
 #define EXCEPTION_H_GENUNIQTOK(x) EXCEPTION_H_CAT(EXCEPTION_H_, x)
 
-void EXCEPTION_H_cl(int **g);
+void EXCEPTION_H_cl(int *const restrict *const restrict g);
 
 #define EXCEPTION_H_TRY(cnt)                                                   \
   for (int EXCEPTION_H_GENUNIQTOK(cnt) = 1; EXCEPTION_H_GENUNIQTOK(cnt);)      \

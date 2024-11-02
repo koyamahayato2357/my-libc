@@ -3,37 +3,38 @@
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  void expand(Vector(T) * vec) overloadable {                                  \
+  void expand(Vector(T) *const restrict vec) overloadable {                    \
     if (VectorCap(*vec) >= VectorLen(*vec) + 1)                                \
       return;                                                                  \
     VectorCap(*vec) *= 2;                                                      \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
-  void push_unsafe(Vector(T) * vec, T v) overloadable {                        \
+  void push_unsafe(Vector(T) *const restrict vec, T v) overloadable {          \
     VectorBuf(*vec)[VectorLen(*vec)++] = v;                                    \
   }                                                                            \
-  void push(Vector(T) * vec, T v) overloadable {                               \
+  void push(Vector(T) *const restrict vec, T v) overloadable {                 \
     expand(vec);                                                               \
     push_unsafe(vec, v);                                                       \
   }                                                                            \
-  void shrink(Vector(T) * vec) overloadable {                                  \
+  void shrink(Vector(T) *const restrict vec) overloadable {                    \
     if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
     VectorCap(*vec) /= 2;                                                      \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
-  Option(T) pop_raw(Vector(T) * vec) overloadable {                            \
+  Option(T) pop_raw(Vector(T) *const restrict vec) overloadable {              \
     return $if(VectorLen(*vec) == 0) Null(T)                                   \
         $else Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                      \
   }                                                                            \
-  Option(T) pop(Vector(T) * vec) overloadable {                                \
+  Option(T) pop(Vector(T) *const restrict vec) overloadable {                  \
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
-  void resize(Vector(T) * vec, size_t n) overloadable {                        \
+  void resize(Vector(T) *const restrict vec, size_t n) overloadable {          \
     *vec = grealloc(VectorBuf(*vec), n + 8);                                   \
   }                                                                            \
-  Vector(T) _initVectorWithArray(const T *const a, size_t len) overloadable {  \
+  Vector(T) _initVectorWithArray(T const *const restrict a, size_t len)        \
+      overloadable {                                                           \
     Vector(T) vec = initVector(T);                                             \
     size_t cap = bigger(len + len / 2, DEFAULT_VECCAP + METADATA_OFFSET);      \
     VectorCap(vec) = cap;                                                      \
@@ -41,7 +42,7 @@
     memcpy(VectorBuf(vec), a, len);                                            \
     return vec;                                                                \
   }                                                                            \
-  void deinitVector(Vector(T) * vec) overloadable {                            \
+  void deinitVector(Vector(T) *const restrict vec) overloadable {              \
     /* for drop */                                                             \
     free(*vec);                                                                \
   }

@@ -1,5 +1,4 @@
 #pragma once
-#include "errcode.h"
 #include "exproriented.h"
 #include <stddef.h>
 
@@ -31,5 +30,5 @@
 #define likely(cond) if (__builtin_expect(!!(cond), 1))
 #define unlikely(cond) if (__builtin_expect(!!(cond), 0))
 
-void free4drop(void *);
-void *grealloc(void *, size_t);
+void free4drop(void *const restrict);
+void *grealloc(void *restrict, size_t);

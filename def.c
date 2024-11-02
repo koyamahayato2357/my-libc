@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 // <!DANGER!> Don't call except drop
-void free4drop(void *pp) { free(*(void **)pp); }
+void free4drop(void *const restrict pp) { free(*(void **)pp); }
 // <!DANGER!> Don't call except drop
 
 // greater realloc
-void *grealloc(void *old, size_t sz) {
+void *grealloc(void *restrict old, size_t sz) {
   return realloc(old, sz) orelse p$panic(ERR_ALLOC_FAILED);
 }
 

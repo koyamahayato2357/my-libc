@@ -10,7 +10,8 @@ typedef struct {
   Vector(char) v;
 } StringList;
 
-StringList *_initStringList(char *, size_t);
-void append(StringList *, char *) overloadable;
-char *toString(const StringList *const);
-void deleteStringList(StringList **);
+StringList *_initStringList(char const *const restrict, size_t);
+void append(StringList *const restrict,
+            char const *const restrict) overloadable;
+char *toString(StringList const *const);
+void deleteStringList(StringList *const restrict *const restrict);

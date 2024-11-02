@@ -18,4 +18,4 @@ typedef enum {
     exit(1);                                                                   \
   } while (0)
 
-const char *codetomsg(int);
+char const *codetomsg(int);

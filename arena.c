@@ -9,7 +9,7 @@ arena arena_new(size_t cap) {
   return (arena){new, cap, new};
 }
 
-void *arena_alloc(arena *a, size_t cap) {
+void *arena_alloc(arena *restrict a, size_t cap) {
   if (a->p + a->cap < a->next + cap)
     // TODO realloc or list structuring
     return nullptr;
@@ -18,7 +18,7 @@ void *arena_alloc(arena *a, size_t cap) {
   return ret;
 }
 
-void arena_destroy(arena *a) { free(a->p); }
+void arena_destroy(arena *restrict a) { free(a->p); }
 
 test(arena) {
   arena a ondrop(arena_destroy) = arena_new(100);

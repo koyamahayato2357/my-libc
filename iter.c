@@ -3,7 +3,7 @@
 #include "testing.h"
 
 #define DEF_ITERFN(T)                                                          \
-  Option(T) next(Iter(T) * iter) overloadable {                                \
+  Option(T) next(Iter(T) *const restrict iter) overloadable {                  \
     return $if(IterLen(*iter) <= IterId(*iter)) Null(T)                        \
         $else Some(IterBuf(*iter)[IterId(*iter)++]);                           \
   }                                                                            \

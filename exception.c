@@ -40,7 +40,7 @@ jmp_buf EXCEPTION_H_jb[MAX_NEST_DEPTH];
 int EXCEPTION_H_errcode;
 int EXCEPTION_H_nest;
 
-void EXCEPTION_H_cl(int **g) { (**g)--; }
+void EXCEPTION_H_cl(int *const restrict *const restrict g) { (**g)--; }
 
 static void _throw() { throw(1); }
 static void _nothrow() {}

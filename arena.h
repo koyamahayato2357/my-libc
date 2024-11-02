@@ -8,5 +8,5 @@ typedef struct {
 } arena;
 
 arena arena_new(size_t);
-void *arena_alloc(arena *, size_t);
-void arena_destroy(arena *);
+void *arena_alloc(arena *restrict, size_t);
+void arena_destroy(arena *restrict);
