@@ -1,5 +1,6 @@
 #include "vector.h"
 #include "testing.h"
+#include <stdbit.h>
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
@@ -7,7 +8,7 @@
     if (VectorCap(*vec) >                                                      \
         VectorLen(*vec) + METADATA_OFFSET / (int)sizeof(**vec))                \
       return;                                                                  \
-    VectorCap(*vec) *= 2;                                                      \
+    VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   void push_unsafe(Vector(T) *const restrict vec, T v) overloadable {          \
@@ -20,7 +21,7 @@
   void shrink(Vector(T) *const restrict vec) overloadable {                    \
     if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
-    VectorCap(*vec) /= 2;                                                      \
+    VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   Option(T) pop_raw(Vector(T) *const restrict vec) overloadable {              \
@@ -31,8 +32,8 @@
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
-  void resize(Vector(T) *const restrict vec, size_t n) overloadable {          \
-    *vec = grealloc(VectorBuf(*vec), n + 8);                                   \
+  void resize(Vector(T) *const restrict v, size_t len) overloadable {          \
+    *v = grealloc(VectorBuf(*v), len + METADATA_OFFSET / (int)sizeof(**v));    \
   }                                                                            \
   Vector(T) _initVectorWithArray(T const *const restrict a, size_t len)        \
       overloadable {                                                           \
@@ -84,6 +85,6 @@ test(expand_shrink) {
   for (int i = 0; i < 90; i++)
     pop_raw(&vec);
   shrink(&vec);
-  expecteq(64, VectorCap(vec));
+  expecteq(16, VectorCap(vec));
   deinitVector(&vec);
 }
