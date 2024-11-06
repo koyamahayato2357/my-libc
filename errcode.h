@@ -8,6 +8,8 @@ typedef enum {
   ERR_SUCCESS = 0,
   ERR_REACHED_UNREACHABLE = 1,
   ERR_ALLOC_FAILED = 2,
+  ERR_THREAD_CREATE = 3,
+  ERR_THREAD_JOIN = 4,
   ERR_RETRY = -1,
 } errcode_t;
 
