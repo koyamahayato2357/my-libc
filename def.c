@@ -15,9 +15,9 @@ test(leak) { drop void *p = malloc(100); }
 
 test(galloc) {
   drop char *p = galloc(char, 100);
-  expect(p != nullptr);
+  expectneq(nullptr, (void *)p);
   // Terminate with error
   // char *q = galloc(long long, 0xffffffffffffffff);
   p = grealloc(p, 10000);
-  expect(p != nullptr);
+  expectneq(nullptr, (void *)p);
 }

@@ -23,15 +23,15 @@ void arena_destroy(arena *restrict a) { free(a->p); }
 test(arena) {
   arena a ondrop(arena_destroy) = arena_new(100);
   void *p = arena_alloc(&a, 10);
-  expect(p != nullptr);
+  expectneq(nullptr, p);
   expecteq(100, a.cap);
-  expect(a.p + 10 == a.next);
+  expecteq(a.p + 10, a.next);
 }
 
 test(boundary_arena) {
   arena a ondrop(arena_destroy) = arena_new(10);
   void *p = arena_alloc(&a, 10);
-  expect(p != nullptr);
+  expectneq(nullptr, p);
   p = arena_alloc(&a, 1);
-  expect(nullptr == p);
+  expecteq((void *)nullptr, p);
 }

@@ -96,6 +96,18 @@ extern int TESTING_H_fail;
     longjmp(jb, 1);                                                            \
   } while (0)
 
+#define expectneq(lhs, rhs)                                                    \
+  do {                                                                         \
+    if (!eq((typeof(rhs))lhs, rhs))                                            \
+      break;                                                                   \
+    printf("Not expected equal ");                                             \
+    printf(#lhs);                                                              \
+    printf(" and ");                                                           \
+    printf(#rhs);                                                              \
+    printf(" at " HERE);                                                       \
+    longjmp(jb, 1);                                                            \
+  } while (0)
+
 #define testing_unreachable                                                    \
   ({                                                                           \
     puts(ESCRED "Reached line " HERE ESCLR);                                   \
