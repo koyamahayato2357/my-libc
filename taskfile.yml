@@ -3,7 +3,7 @@ version: '3'
 tasks:
   default:
     cmds:
-      - clang -std=c23 -DTEST_MODE *.c -Wall -Wextra
+      - zig cc -std=c23 -DTEST_MODE *.c -Wall -Wextra
       - ./a.out
   all-test:
     cmds:
