@@ -1,6 +1,7 @@
 #pragma once
 #include "exproriented.h"
 #include <stddef.h>
+#include <sys/types.h>
 
 #define CAT(a, b) a##b
 #define TOSTR(x) #x
@@ -29,6 +30,12 @@
   } while (0)
 #define likely(cond) if (__builtin_expect(!!(cond), 1))
 #define unlikely(cond) if (__builtin_expect(!!(cond), 0))
+
+typedef u_int8_t void8_t;
+typedef u_int16_t void16_t;
+typedef u_int32_t void32_t;
+typedef u_int64_t void64_t;
+typedef unsigned long long void128_t;
 
 void free4drop(void *const restrict);
 void *grealloc(void *restrict, size_t);
