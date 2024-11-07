@@ -7,7 +7,7 @@ tasks:
       - ./a.out
   all-test:
     cmds:
-      - clang -std=c23 -DTEST_MODE -DTEST_MODE_ALL *.c -Wall -Wextra -fsanitize=undefined,address
+      - zig cc -std=c23 -DTEST_MODE -DTEST_MODE_ALL *.c -Wall -Wextra
   sanitize:
     cmds:
       - clang-18 -std=c23 -DTEST_MODE *.c -Wall -Wextra -fsanitize=undefined,address
