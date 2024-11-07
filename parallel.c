@@ -17,8 +17,8 @@ void *f2(void *p [[maybe_unused]]) {
 }
 
 test(parallel) {
-  pthread_t pt2 = async_f(f2);
-  pthread_t pt1 = async_f(f1);
+  pthread_t pt2 = async(f2, nullptr);
+  pthread_t pt1 = async(f1, nullptr);
   expecteq((void *)nullptr, await(pt2));
   expecteq((void *)nullptr, await(pt1));
 }

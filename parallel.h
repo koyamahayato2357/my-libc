@@ -5,14 +5,7 @@
 #define async(fn, arg)                                                         \
   ({                                                                           \
     pthread_t pt;                                                              \
-    if (pthread_create(&pt, nullptr, fn, (void *)&arg) != 0)                   \
-      panic(ERR_THREAD_CREATE);                                                \
-    pt;                                                                        \
-  })
-#define async_f(fn)                                                            \
-  ({                                                                           \
-    pthread_t pt;                                                              \
-    if (pthread_create(&pt, nullptr, fn, nullptr) != 0)                        \
+    if (pthread_create(&pt, nullptr, fn, (void *)arg) != 0)                    \
       panic(ERR_THREAD_CREATE);                                                \
     pt;                                                                        \
   })
