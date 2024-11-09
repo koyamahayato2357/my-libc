@@ -18,7 +18,7 @@
 // specified length bit unsigned integer
 #define u(n) unsigned _BitInt(n)
 #define galloc(type, size) /* general allocator */                             \
-  (malloc(sizeof(type) * size) orelse p$panic(ERR_ALLOC_FAILED))
+  (malloc(sizeof(type) * size) orelse p$panic(ERR_ALLOC))
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
 #define orelse ?:

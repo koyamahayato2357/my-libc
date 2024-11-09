@@ -5,7 +5,7 @@ char const *codetomsg(int code) {
   switch (code) {
   case ERR_SUCCESS:
     return "success";
-  case ERR_ALLOC_FAILED:
+  case ERR_ALLOC:
     return "allocation failure";
   case ERR_REACHED_UNREACHABLE:
     return "reached unreachable";

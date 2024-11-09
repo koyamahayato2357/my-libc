@@ -8,7 +8,7 @@ void free4drop(void *const restrict pp) { free(*(void **)pp); }
 
 // greater realloc
 void *grealloc(void *restrict old, size_t sz) {
-  return realloc(old, sz) orelse p$panic(ERR_ALLOC_FAILED);
+  return realloc(old, sz) orelse p$panic(ERR_ALLOC);
 }
 
 test(leak) { drop void *p = malloc(100); }
