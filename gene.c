@@ -23,7 +23,6 @@ void printany(void *x) overloadable { printf("%p", x); }
     putchar('\n');                                                             \
   }
 APPLY_PRIMITIVE_TYPES(DEF_printanyln)
-APPLY_POINTER_TYPES(DEF_printanyln)
 
 bool eq(int x, int y) overloadable { return x == y; }
 bool eq(size_t x, size_t y) overloadable { return x == y; }
