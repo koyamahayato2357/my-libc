@@ -17,6 +17,14 @@ void printany(bool x) overloadable { printf($if(x) "true" $else "false"); }
 void printany(char *x) overloadable { printf("%s", x); }
 void printany(void *x) overloadable { printf("%p", x); }
 
+#define DEF_printanyln(T)                                                      \
+  void printanyln(T x) overloadable {                                          \
+    printany(x);                                                               \
+    putchar('\n');                                                             \
+  }
+APPLY_PRIMITIVE_TYPES(DEF_printanyln)
+APPLY_POINTER_TYPES(DEF_printanyln)
+
 bool eq(int x, int y) overloadable { return x == y; }
 bool eq(size_t x, size_t y) overloadable { return x == y; }
 bool eq(double x, double y) overloadable { return double_eq(x, y); }
