@@ -25,10 +25,10 @@ test(Some) {
 
   Option(char) coption = Some((char)42);
   expect(!isnull(coption));
-  expecteq(unwrap(coption), 42);
+  expecteq(42, unwrap(coption));
   coption = Some((char)'a');
   expect(!isnull(coption));
-  expecteq(unwrap(coption), 'a');
+  expecteq('a', unwrap(coption));
 }
 
 test(Null) {
@@ -45,11 +45,11 @@ test(unwrap_or) {
 
 test(unwrap_unsafe) {
   Option(int) o = Some(99);
-  expecteq(unwrap_unsafe(o), 99);
+  expecteq(99, unwrap_unsafe(o));
   // Undefined behaivior; might be false
-  // expecteq(unwrap_unsafe(Null(T)), Null(T).val);
+  // expecteq(Null(T).val, unwrap_unsafe(Null(T)));
   o = Some(334);
-  expecteq(unwrap_unsafe(o), 334);
+  expecteq(334, unwrap_unsafe(o));
 }
 
 int square(int x) { return x * x; }
