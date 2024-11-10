@@ -2,13 +2,13 @@
 #include "ansiesc.h"
 #include "gene.h"
 
-#define  LOG_LEVEL_TRACE 0
-#define  LOG_LEVEL_DEBUG 1
-#define  LOG_LEVEL_INFO 2
-#define  LOG_LEVEL_WARN 3
-#define  LOG_LEVEL_ERROR 4
-#define  LOG_LEVEL_CRITICAL 5
-#define  LOG_LEVEL_OFF 6
+#define LOG_LEVEL_TRACE 0
+#define LOG_LEVEL_DEBUG 1
+#define LOG_LEVEL_INFO 2
+#define LOG_LEVEL_WARN 3
+#define LOG_LEVEL_ERROR 4
+#define LOG_LEVEL_CRITICAL 5
+#define LOG_LEVEL_OFF 6
 
 #ifndef LOG_LEVEL
 #define LOG_LEVEL LOG_LEVEL_OFF

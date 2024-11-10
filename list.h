@@ -1,6 +1,5 @@
 #pragma once
 #include <stddef.h>
-#include <stdlib.h>
 
 typedef struct List {
   struct List *prev;
