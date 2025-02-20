@@ -4,39 +4,39 @@
 #include <stdlib.h>
 
 #define DEF_VECFN(T)                                                           \
-  void expand(Vector(T) *const restrict vec) overloadable {                    \
+  overloadable void expand(Vector(T) *const restrict vec) {                    \
     if (VectorCap(*vec) >                                                      \
         VectorLen(*vec) + METADATA_OFFSET / (int)sizeof(**vec))                \
       return;                                                                  \
     VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
-  void push_unsafe(Vector(T) *const restrict vec, T v) overloadable {          \
+  overloadable void push_unsafe(Vector(T) *const restrict vec, T v) {          \
     VectorBuf(*vec)[VectorLen(*vec)++] = v;                                    \
   }                                                                            \
-  void push(Vector(T) *const restrict vec, T v) overloadable {                 \
+  overloadable void push(Vector(T) *const restrict vec, T v) {                 \
     expand(vec);                                                               \
     push_unsafe(vec, v);                                                       \
   }                                                                            \
-  void shrink(Vector(T) *const restrict vec) overloadable {                    \
+  overloadable void shrink(Vector(T) *const restrict vec) {                    \
     if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
     VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
-  Option(T) pop_raw(Vector(T) *const restrict vec) overloadable {              \
+  overloadable Option(T) pop_raw(Vector(T) *const restrict vec) {              \
     return $if(VectorLen(*vec) == 0) Null(T)                                   \
         $else Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                      \
   }                                                                            \
-  Option(T) pop(Vector(T) *const restrict vec) overloadable {                  \
+  overloadable Option(T) pop(Vector(T) *const restrict vec) {                  \
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
-  void resize(Vector(T) *const restrict v, size_t len) overloadable {          \
+  overloadable void resize(Vector(T) *const restrict v, size_t len) {          \
     *v = grealloc(VectorBuf(*v), len + METADATA_OFFSET / (int)sizeof(**v));    \
   }                                                                            \
-  Vector(T) _initVectorWithArray(T const *const restrict a, size_t len)        \
-      overloadable {                                                           \
+  overloadable Vector(T)                                                       \
+      _initVectorWithArray(T const *const restrict a, size_t len) {            \
     Vector(T) vec = initVector(T);                                             \
     size_t cap = bigger(len + len / 2, DEFAULT_VECCAP + METADATA_OFFSET);      \
     VectorCap(vec) = cap;                                                      \
@@ -44,7 +44,7 @@
     memcpy(VectorBuf(vec), a, len);                                            \
     return vec;                                                                \
   }                                                                            \
-  void deinitVector(Vector(T) *const restrict vec) overloadable {              \
+  overloadable void deinitVector(Vector(T) *const restrict vec) {              \
     /* for drop */                                                             \
     free(*vec);                                                                \
   }

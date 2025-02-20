@@ -59,7 +59,7 @@ test(multi_statement) {
 test(dollar_sign) {
   // $ expression returns 0.
   // For now.
-  // I want Unit type
+  // unit type intention
   int a = $(int i = 5; expecteq(5, i));
   expecteq(0, a);
 }

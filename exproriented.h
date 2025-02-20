@@ -1,6 +1,8 @@
 #pragma once
 #include "errcode.h"
 
+#define orelse ?:
+
 #define $break $(break)
 #define $continue $(continue)
 #define $return(...) $(return __VA_ARGS__)

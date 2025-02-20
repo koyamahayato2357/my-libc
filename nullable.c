@@ -3,16 +3,16 @@
 #include "testing.h"
 
 #define DEF_OPTIONFN(T)                                                        \
-  Option(T) Some(T v) overloadable { return (Option(T)){false, v}; }           \
-  Option(T) map(Option(T) o, T (*f)(T)) overloadable {                         \
+  overloadable Option(T) Some(T v) { return (Option(T)){false, v}; }           \
+  overloadable Option(T) map(Option(T) o, T (*f)(T)) {                         \
     return $if(isnull(o)) Null(T) $else Some(f(unwrap_unsafe(o)));             \
   }                                                                            \
-  Option(T) and_then(Option(T) o, Option(T) (*f)(T)) overloadable {            \
+  overloadable Option(T) and_then(Option(T) o, Option(T) (*f)(T)) {            \
     return $if(isnull(o)) Null(T) $else f(unwrap_unsafe(o));                   \
   }                                                                            \
-  bool isnull(Option(T) o) overloadable { return o.isnull; }                   \
-  T unwrap_unsafe(Option(T) o) overloadable { return o.val; }                  \
-  T unwrap(Option(T) o) overloadable {                                         \
+  overloadable bool isnull(Option(T) o) { return o.isnull; }                   \
+  overloadable T unwrap_unsafe(Option(T) o) { return o.val; }                  \
+  overloadable T unwrap(Option(T) o) {                                         \
     return unwrap_or(o, (T)$panic(ERR_REACHED_UNREACHABLE));                   \
   }
 

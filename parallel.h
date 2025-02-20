@@ -2,6 +2,7 @@
 #include "errcode.h"
 #include <pthread.h>
 
+// Is this correct usage of the word async/await?
 #define async(fn, arg)                                                         \
   ({                                                                           \
     pthread_t pt;                                                              \

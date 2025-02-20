@@ -11,12 +11,12 @@
     bool isnull;                                                               \
     T val;                                                                     \
   } Option(T);                                                                 \
-  Option(T) Some(T v) overloadable;                                            \
-  Option(T) map(Option(T), T (*)(T)) overloadable;                             \
-  Option(T) and_then(Option(T), Option(T) (*)(T)) overloadable;                \
-  bool isnull(Option(T)) overloadable;                                         \
-  T unwrap_unsafe(Option(T)) overloadable;                                     \
-  T unwrap(Option(T)) overloadable;
+  overloadable Option(T) Some(T v);                                            \
+  overloadable Option(T) map(Option(T), T (*)(T));                             \
+  overloadable Option(T) and_then(Option(T), Option(T) (*)(T));                \
+  overloadable bool isnull(Option(T));                                         \
+  overloadable T unwrap_unsafe(Option(T));                                     \
+  overloadable T unwrap(Option(T));
 
 #define Null(T)                                                                \
   (Option(T)) {                                                                \
