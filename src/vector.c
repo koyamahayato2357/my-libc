@@ -79,7 +79,7 @@ test(pop) {
 
 test(expand_shrink) {
   Vector(char) vec = initVector(char);
-  for (int i = 0; i < 100; i++)
+  for (char i = 0; i < 100; i++)
     push(&vec, i);
   expecteq(128, VectorCap(vec));
   for (int i = 0; i < 90; i++)
