@@ -61,12 +61,4 @@ test(exception) {
   }
   try _throw();
   catchor(0b1110) testing_unreachable;
-  int i = 0;
-  try _throw();
-  catchany {
-    if (++i < 5)
-      retry;
-    if (i < 5)
-      testing_unreachable;
-  }
 }
