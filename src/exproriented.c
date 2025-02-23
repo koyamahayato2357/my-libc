@@ -38,7 +38,8 @@ test(in_statement) {
 }
 
 test(multi_statement) {
-  int a = $if(true)({
+  bool c = true;
+  int a = $if(c)({
     int i = 1;
     i * 2;
   }) $else({
@@ -46,7 +47,7 @@ test(multi_statement) {
     (i + 1) * i;
   });
   expecteq(a, 2);
-  a = $if(false)({
+  a = $if(!c)({
     int i = 9;
     i - 1;
   }) $else({
@@ -60,6 +61,6 @@ test(dollar_sign) {
   // $ expression returns 0.
   // For now.
   // unit type intention
-  int a = $(int i = 5; expecteq(5, i));
+  auto a = $(int i = 5; expecteq(5, i));
   expecteq(0, a);
 }
