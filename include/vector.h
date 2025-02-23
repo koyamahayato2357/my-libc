@@ -19,12 +19,14 @@
 #define initVector(T)                                                          \
   ({                                                                           \
     Vector(T) vec = galloc(T, DEFAULT_VECCAP);                                 \
-    VectorCap(vec) = DEFAULT_VECCAP;                                           \
-    VectorLen(vec) = 0;                                                        \
+    VectorCap_OVERWRITE(vec) = DEFAULT_VECCAP;                                 \
+    VectorLen_OVERWRITE(vec) = 0;                                              \
     vec;                                                                       \
   })
-#define VectorLen(vec) ((int *)vec)[0]
-#define VectorCap(vec) ((int *)vec)[1]
+#define VectorLen(vec) ((size_t)((int *)vec)[0])
+#define VectorCap(vec) ((size_t)((int *)vec)[1])
+#define VectorLen_OVERWRITE(vec) ((int *)vec)[0]
+#define VectorCap_OVERWRITE(vec) ((int *)vec)[1]
 #define VectorBuf(vec) ((vec) + METADATA_OFFSET / sizeof((vec)[0]))
 #define initVectorWithArray(...)                                               \
   _initVectorWithArray(__VA_ARGS__, sizeof(__VA_ARGS__));

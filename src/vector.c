@@ -5,14 +5,13 @@
 
 #define DEF_VECFN(T)                                                           \
   overloadable void expand(Vector(T) *const restrict vec) {                    \
-    if (VectorCap(*vec) >                                                      \
-        VectorLen(*vec) + METADATA_OFFSET / (int)sizeof(**vec))                \
+    if (VectorCap(*vec) > VectorLen(*vec) + METADATA_OFFSET / sizeof(**vec))   \
       return;                                                                  \
-    VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
+    VectorCap_OVERWRITE(*vec) = stdc_bit_ceil((int)VectorLen(*vec) + 1);       \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   overloadable void push_unsafe(Vector(T) *const restrict vec, T v) {          \
-    VectorBuf(*vec)[VectorLen(*vec)++] = v;                                    \
+    VectorBuf(*vec)[VectorLen_OVERWRITE(*vec)++] = v;                          \
   }                                                                            \
   overloadable void push(Vector(T) *const restrict vec, T v) {                 \
     expand(vec);                                                               \
@@ -21,26 +20,26 @@
   overloadable void shrink(Vector(T) *const restrict vec) {                    \
     if (VectorLen(*vec) * 4 > VectorCap(*vec))                                 \
       return;                                                                  \
-    VectorCap(*vec) = stdc_bit_ceil(VectorLen(*vec));                          \
+    VectorCap_OVERWRITE(*vec) = stdc_bit_ceil((int)VectorLen(*vec));           \
     *vec = grealloc(*vec, VectorCap(*vec));                                    \
   }                                                                            \
   overloadable Option(T) pop_raw(Vector(T) *const restrict vec) {              \
     return $if(VectorLen(*vec) == 0) Null(T)                                   \
-        $else Some(VectorBuf(*vec)[--(VectorLen(*vec))]);                      \
+        $else Some(VectorBuf(*vec)[--(VectorLen_OVERWRITE(*vec))]);            \
   }                                                                            \
   overloadable Option(T) pop(Vector(T) *const restrict vec) {                  \
     shrink(vec);                                                               \
     return pop_raw(vec);                                                       \
   }                                                                            \
   overloadable void resize(Vector(T) *const restrict v, size_t len) {          \
-    *v = grealloc(VectorBuf(*v), len + METADATA_OFFSET / (int)sizeof(**v));    \
+    *v = grealloc(VectorBuf(*v), len + METADATA_OFFSET / sizeof(**v));         \
   }                                                                            \
   overloadable Vector(T)                                                       \
       _initVectorWithArray(T const *const restrict a, size_t len) {            \
     Vector(T) vec = initVector(T);                                             \
     size_t cap = bigger(len + len / 2, DEFAULT_VECCAP + METADATA_OFFSET);      \
-    VectorCap(vec) = cap;                                                      \
-    VectorLen(vec) = len;                                                      \
+    VectorCap_OVERWRITE(vec) = (int)cap;                                       \
+    VectorLen_OVERWRITE(vec) = (int)len;                                       \
     memcpy(VectorBuf(vec), a, len);                                            \
     return vec;                                                                \
   }                                                                            \
