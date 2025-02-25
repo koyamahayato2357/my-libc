@@ -74,3 +74,11 @@ test(chain) {
   Option(int) o = Some(4);
   expecteq(65536, unwrap(map(map(map(o, square), square), square)));
 }
+
+test_table(isnull_table, isnull, (bool, Option(int)),
+           {
+               {true, Null(int)},
+               {false, Some(10)},
+               {false, Some(-100)},
+               {false, Some(334)},
+           })
