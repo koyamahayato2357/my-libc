@@ -14,13 +14,14 @@ extern int EXCEPTION_H_nest;
 void EXCEPTION_H_cl(int *const restrict *const restrict g);
 
 #define EXCEPTION_H_TRY(cnt)                                                   \
-  for (int EXCEPTION_H_GENUNIQTOK(cnt) = 1; EXCEPTION_H_GENUNIQTOK(cnt);)      \
-    for (int *EXCEPTION_H_CAT(EXCEPIOTN_H_g_, cnt)                             \
-             [[gnu::cleanup(EXCEPTION_H_cl)]] = &EXCEPTION_H_nest;             \
-         EXCEPTION_H_GENUNIQTOK(cnt); EXCEPTION_H_GENUNIQTOK(cnt) = 0)         \
-      if ((EXCEPTION_H_errcode =                                               \
-               setjmp(EXCEPTION_H_jb[EXCEPTION_H_nest++])) == 0 ||             \
-          EXCEPTION_H_errcode == ERR_RETRY)
+  for (int *EXCEPTION_H_CAT(EXCEPIOTN_H_g_, cnt)                               \
+           [[gnu::cleanup(EXCEPTION_H_cl)]] = &EXCEPTION_H_nest,               \
+           EXCEPTION_H_CAT(EXCEPTION_H_FLAG, cnt) = 1;                         \
+       EXCEPTION_H_CAT(EXCEPTION_H_FLAG, cnt);                                 \
+       EXCEPTION_H_CAT(EXCEPTION_H_FLAG, cnt) = 0)                             \
+    if ((EXCEPTION_H_errcode = setjmp(EXCEPTION_H_jb[EXCEPTION_H_nest++])) ==  \
+            0 ||                                                               \
+        EXCEPTION_H_errcode == ERR_RETRY)
 
 #define try EXCEPTION_H_TRY(__COUNTER__)
 #define catch(e) else if (EXCEPTION_H_errcode == (e))
