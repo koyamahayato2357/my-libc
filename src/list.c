@@ -6,7 +6,7 @@ typedef struct {
   int val;
 } sample;
 
-test(list) {
+test (list) {
   sample *root = initList(sample, 1, val);
 
   appendList(root, 2, val);
@@ -18,7 +18,7 @@ test(list) {
   deleteList(root);
 }
 
-test(nextlist) {
+test (nextlist) {
   sample *root = initList(sample, 42, val);
   sample *p = root;
 

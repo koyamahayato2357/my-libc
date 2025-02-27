@@ -1,8 +1,8 @@
 #ifdef TEST_MODE_ALL
-#include "parallel.h"
-#include "testing.h"
-#include <pthread.h>
-#include <unistd.h>
+ #include "parallel.h"
+ #include "testing.h"
+ #include <pthread.h>
+ #include <unistd.h>
 
 void *f1(void *p [[maybe_unused]]) {
   sleep(1);
@@ -16,7 +16,7 @@ void *f2(void *p [[maybe_unused]]) {
   return nullptr;
 }
 
-test(parallel) {
+test (parallel) {
   pthread_t pt2 = spawn(f2, nullptr);
   pthread_t pt1 = spawn(f1, nullptr);
   expecteq((void *)nullptr, join(pt2));

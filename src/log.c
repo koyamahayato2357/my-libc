@@ -1,7 +1,7 @@
 #include "log.h"
 #include "testing.h"
 
-test(log) {
+test (log) {
   LOG_TRACE("\nhello\n");
   LOG_DEBUG("hello\n");
   LOG_INFO("hello\n");

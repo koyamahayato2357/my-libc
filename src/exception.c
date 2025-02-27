@@ -40,12 +40,17 @@ jmp_buf EXCEPTION_H_jb[MAX_NEST_DEPTH];
 int EXCEPTION_H_errcode;
 int EXCEPTION_H_nest;
 
-void EXCEPTION_H_cl(int *const restrict *const restrict g) { (**g)--; }
+void EXCEPTION_H_cl(int *restrict const *restrict const g) {
+  (**g)--;
+}
 
-static void _throw() { throw(1); }
-static void _nothrow() {}
+static void _throw() {
+  throw(1);
+}
+static void _nothrow() {
+}
 
-test(exception) {
+test (exception) {
   try {
     _throw();
     testing_unreachable;
@@ -55,8 +60,7 @@ test(exception) {
   try {
     try _throw();
     catchany capture(errcode) {
-      if (errcode != 1)
-        testing_unreachable;
+      if (errcode != 1) testing_unreachable;
     }
   }
   try _throw();

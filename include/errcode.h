@@ -13,11 +13,11 @@ typedef enum {
   ERR_RETRY = -1,
 } errcode_t;
 
-#define panic(e)                                                               \
-  do {                                                                         \
-    printf("Panicked at " HERE " ");                                           \
-    puts(codetomsg(e));                                                        \
-    exit(1);                                                                   \
+#define panic(e) \
+  do { \
+    printf("Panicked at " HERE " "); \
+    puts(codetomsg(e)); \
+    exit(1); \
   } while (0)
 
 char const *codetomsg(int);

@@ -2,23 +2,29 @@
 #include "def.h"
 #include "testing.h"
 
-#define DEF_OPTIONFN(T)                                                        \
-  overloadable Option(T) Some(T v) { return (Option(T)){false, v}; }           \
-  overloadable Option(T) map(Option(T) o, T (*f)(T)) {                         \
-    return $if(isnull(o)) Null(T) $else Some(f(unwrap_unsafe(o)));             \
-  }                                                                            \
-  overloadable Option(T) and_then(Option(T) o, Option(T) (*f)(T)) {            \
-    return $if(isnull(o)) Null(T) $else f(unwrap_unsafe(o));                   \
-  }                                                                            \
-  overloadable bool isnull(Option(T) o) { return o.isnull; }                   \
-  overloadable T unwrap_unsafe(Option(T) o) { return o.val; }                  \
-  overloadable T unwrap(Option(T) o) {                                         \
-    return unwrap_or(o, (T)$panic(ERR_REACHED_UNREACHABLE));                   \
+#define DEF_OPTIONFN(T) \
+  overloadable Option(T) Some(T v) { \
+    return (Option(T)){false, v}; \
+  } \
+  overloadable Option(T) map(Option(T) o, T (*f)(T)) { \
+    return $if(isnull(o)) Null(T) $else Some(f(unwrap_unsafe(o))); \
+  } \
+  overloadable Option(T) and_then(Option(T) o, Option(T) (*f)(T)) { \
+    return $if(isnull(o)) Null(T) $else f(unwrap_unsafe(o)); \
+  } \
+  overloadable bool isnull(Option(T) o) { \
+    return o.isnull; \
+  } \
+  overloadable T unwrap_unsafe(Option(T) o) { \
+    return o.val; \
+  } \
+  overloadable T unwrap(Option(T) o) { \
+    return unwrap_or(o, (T)$panic(ERR_REACHED_UNREACHABLE)); \
   }
 
 APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)
 
-test(Some) {
+test (Some) {
   Option(size_t) option = Some((size_t)0);
   expect(!isnull(option));
   expecteq(unwrap(option), 0);
@@ -31,19 +37,19 @@ test(Some) {
   expecteq('a', unwrap(coption));
 }
 
-test(Null) {
+test (Null) {
   Option(double) noption = Null(double);
   expect(isnull(noption));
 }
 
-test(unwrap_or) {
+test (unwrap_or) {
   Option(size_t) o = Null(size_t);
   expecteq(42, unwrap_or(o, 42));
   o = Some((size_t)99);
   expecteq(99, unwrap_or(o, 42));
 }
 
-test(unwrap_unsafe) {
+test (unwrap_unsafe) {
   Option(int) o = Some(99);
   expecteq(99, unwrap_unsafe(o));
   // Undefined behaivior; might be false
@@ -52,33 +58,39 @@ test(unwrap_unsafe) {
   expecteq(334, unwrap_unsafe(o));
 }
 
-int square(int x) { return x * x; }
+int square(int x) {
+  return x * x;
+}
 
-test(map) {
+test (map) {
   Option(int) o = Null(int);
   expect(isnull(map(o, square)));
   o = Some(10);
   expecteq(100, unwrap(map(o, square)));
 }
 
-Option(int) square_o(int x) { return Some(x * x); }
+Option(int) square_o(int x) {
+  return Some(x * x);
+}
 
-test(and_then) {
+test (and_then) {
   Option(int) o = Null(int);
   expect(isnull(and_then(o, square_o)));
   o = Some(10);
   expecteq(100, unwrap(and_then(o, square_o)));
 }
 
-test(chain) {
+test (chain) {
   Option(int) o = Some(4);
-  expecteq(65536, unwrap(map(map(map(o, square), square), square)));
+  expecteq(65'536, unwrap(map(map(map(o, square), square), square)));
 }
 
-test_table(isnull_table, isnull, (bool, Option(int)),
-           {
-               {true, Null(int)},
-               {false, Some(10)},
-               {false, Some(-100)},
-               {false, Some(334)},
-           })
+test_table(
+  isnull_table, isnull, (bool, Option(int)),
+  {
+    { true,  Null(int)},
+    {false,   Some(10)},
+    {false, Some(-100)},
+    {false,  Some(334)},
+}
+)

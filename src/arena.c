@@ -17,9 +17,11 @@ void *arena_alloc(arena *restrict a, size_t cap) {
   return ret;
 }
 
-void arena_destroy(arena *restrict a) { free(a->p); }
+void arena_destroy(arena *restrict a) {
+  free(a->p);
+}
 
-test(arena) {
+test (arena) {
   arena a ondrop(arena_destroy) = arena_new(100);
   void *p = arena_alloc(&a, 10);
   expectneq(nullptr, p);
@@ -27,7 +29,7 @@ test(arena) {
   expecteq(a.p + 10, a.next);
 }
 
-test(boundary_arena) {
+test (boundary_arena) {
   arena a ondrop(arena_destroy) = arena_new(10);
   void *p = arena_alloc(&a, 10);
   expectneq(nullptr, p);

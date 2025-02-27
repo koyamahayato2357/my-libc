@@ -3,10 +3,10 @@
 #include <stddef.h>
 #include <sys/types.h>
 
-#define CAT(a, b) a##b
-#define TOSTR(x) #x
-#define TO2STR(x) TOSTR(x)
-#define HERE __FILE__ ":" TO2STR(__LINE__)
+#define CAT(a, b)    a##b
+#define TOSTR(x)     #x
+#define TO2STR(x)    TOSTR(x)
+#define HERE         __FILE__ ":" TO2STR(__LINE__)
 #define overloadable [[clang::overloadable]]
 
 // call specified function when exiting scope
@@ -16,18 +16,18 @@
 // specified length bit integer
 #define i(n) _BitInt(n)
 // specified length bit unsigned integer
-#define u(n) unsigned _BitInt(n)
-#define galloc(type, size) /* general allocator */                             \
+#define u(n)               unsigned _BitInt(n)
+#define galloc(type, size) /* general allocator */ \
   ((type *)malloc(sizeof(type) * size) ?: p$panic(ERR_ALLOC))
 #define lesser(a, b) ((a) > (b) ? (b) : (a))
 #define bigger(a, b) ((a) < (b) ? (b) : (a))
-#define _ auto CAT(_DISCARD_, __COUNTER__) [[maybe_unused]]
-#define swap(a, b)                                                             \
-  do {                                                                         \
-    typeof(a) temp = a;                                                        \
-    a = b;                                                                     \
-    b = temp;                                                                  \
+#define _            auto CAT(_DISCARD_, __COUNTER__) [[maybe_unused]]
+#define swap(a, b) \
+  do { \
+    typeof(a) temp = a; \
+    a = b; \
+    b = temp; \
   } while (0)
 
-void free4drop(void *const restrict);
+void free4drop(void *restrict const);
 void *grealloc(void *restrict, size_t);
