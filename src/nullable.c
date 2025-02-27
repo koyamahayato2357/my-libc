@@ -20,6 +20,19 @@
   } \
   overloadable T unwrap(Option(T) o) { \
     return unwrap_or(o, (T)$panic(ERR_REACHED_UNREACHABLE)); \
+  } \
+  overloadable void printany(Option(T) o) { \
+    if (isnull(o)) printf("null"); \
+    else printany(unwrap_unsafe(o)); \
+  } \
+  overloadable void printanyln(Option(T) o) { \
+    printany(o); \
+    putchar('\n'); \
+  } \
+  overloadable bool eq(Option(T) lhs, Option(T) rhs) { \
+    return $if(isnull(lhs) || isnull(rhs)) false $else eq( \
+      unwrap_unsafe(lhs), unwrap_unsafe(rhs) \
+    ); \
   }
 
 APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)

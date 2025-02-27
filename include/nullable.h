@@ -16,7 +16,10 @@
   overloadable Option(T) and_then(Option(T), Option(T) (*)(T)); \
   overloadable bool isnull(Option(T)); \
   overloadable T unwrap_unsafe(Option(T)); \
-  overloadable T unwrap(Option(T));
+  overloadable T unwrap(Option(T)); \
+  overloadable void printany(Option(T)); \
+  overloadable void printanyln(Option(T)); \
+  overloadable bool eq(Option(T), Option(T));
 
 #define Null(T) \
   (Option(T)) { \
