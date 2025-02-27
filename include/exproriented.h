@@ -1,6 +1,8 @@
 #pragma once
 #include "errcode.h"
 
+#define UNIT 0UL
+
 #define orelse ?:
 
 #define $break       $(break)
@@ -23,10 +25,10 @@
 #define $(statements) \
   ({ \
     statements; \
-    0UL; \
+    UNIT; \
   })
 #define p$(statements) \
   ({ \
     statements; \
-    (void *)0; \
+    (void *)UNIT; \
   })
