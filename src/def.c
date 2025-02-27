@@ -6,6 +6,9 @@
 void free4drop(void *restrict const pp) {
   free(*(void **)pp);
 }
+void fclose4drop(FILE **restrict const fp) {
+  fclose(*fp);
+}
 
 // greater realloc
 void *grealloc(void *restrict old, size_t sz) {

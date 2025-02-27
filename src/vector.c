@@ -46,7 +46,7 @@
     /* for drop */ \
     free(*vec); \
   }
-
+#define bigger(l, r) ((l) > (r) ? (l) : (r))
 APPLY_PRIMITIVE_TYPES(DEF_VECFN)
 
 test (push) {
