@@ -12,7 +12,7 @@ void *grealloc(void *restrict old, size_t sz) {
   return realloc(old, sz) ?: p$panic(ERR_ALLOC);
 }
 
-test (leak) { void *p drop = malloc(100); }
+test (leak) { _ drop = malloc(100); }
 
 test (galloc) {
   char *p drop = galloc(char, 100);
