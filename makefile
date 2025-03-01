@@ -71,6 +71,10 @@ else ifneq ($(OPTLEVEL),0)
   LDFLAGS += $(OPTLDFLAGS)
 endif
 
+ifdef TEST_FILTER
+  CFLAGS += -DTEST_FILTER="\"$(TEST_FILTER)\""
+endif
+
 # generate output path
 GITBRANCH := $(shell git branch --show-current 2>/dev/null)
 SEED = $(CC)$(EXTRAFLAGS)$(CFLAGS)$(LDFLAGS)$(GITBRANCH)
@@ -86,7 +90,11 @@ SRCS = $(wildcard $(SRCDIR)/*.c)
 OBJS = $(patsubst $(SRCDIR)/%.c,$(TARGETDIR)/%.o,$(SRCS))
 DEPS = $(patsubst $(SRCDIR)/%.c,$(DEPDIR)/%.d,$(SRCS))
 
--include $(DEPS)
+ifeq ($(MAKECMDGOALS),build)
+	-include $(DEPS)
+else ifeq ($(MAKECMDGOALS),run)
+	-include $(DEPS)
+endif
 
 # rules
 .PHONY: run analyze clean-all clean doc lint fmt log
