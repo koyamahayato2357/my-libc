@@ -4,7 +4,14 @@
 #include "gene.h"
 
 #define NULLABLE_H_OPTIONT Option
+#define NULLABLE_H_FLAG    CAT(NULLABLE_H_cnt, __COUNTER__)
 #define Option(T)          CAT(NULLABLE_H_OPTIONT, T)
+#define NULLABLE_H_CAPTURE(capture) \
+  for (auto capture = unwrap_unsafe(o); NULLABLE_H_FLAG; \
+       NULLABLE_H_FLAG = false) \
+    if (!isnull(o))
+#define iflet(o) \
+  for (bool NULLABLE_H_FLAG = true; NULLABLE_H_FLAG;) NULLABLE_H_CAPTURE
 
 #define DEF_OPTIONAL(T) \
   typedef struct { \

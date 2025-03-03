@@ -55,6 +55,16 @@ test (Null) {
   expect(isnull(noption));
 }
 
+test_table(
+  isnull_table, isnull, (bool, Option(int)),
+  {
+    { true,  Null(int)},
+    {false,   Some(10)},
+    {false, Some(-100)},
+    {false,  Some(334)},
+}
+)
+
 test (unwrap_or) {
   Option(size_t) o = Null(size_t);
   expecteq(42, unwrap_or(o, 42));
@@ -98,12 +108,20 @@ test (chain) {
   expecteq(65'536, unwrap(map(map(map(o, square), square), square)));
 }
 
-test_table(
-  isnull_table, isnull, (bool, Option(int)),
-  {
-    { true,  Null(int)},
-    {false,   Some(10)},
-    {false, Some(-100)},
-    {false,  Some(334)},
+test (iflet) {
+  Option(int) o = Some(334);
+  iflet(o)(nonnull) {
+    expecteq(334, nonnull);
+  }
+  else {
+    testing_unreachable;
+  }
+  o = Null(int);
+  iflet(o)(null) {
+    _ = null;
+    testing_unreachable;
+  }
+  else {
+    expect(isnull(o));
+  }
 }
-)
