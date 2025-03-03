@@ -47,6 +47,7 @@ BreakStringLiterals: true
 # ColumnLimit: 80
 ContinuationIndentWidth: 2
 ForEachMacros: [test, bench]
+IfMacros: [iflet]
 IncludeBlocks: Merge
 IndentCaseBlocks: false
 IndentCaseLabels: false

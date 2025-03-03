@@ -40,7 +40,7 @@ APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)
 test (Some) {
   Option(size_t) option = Some((size_t)0);
   expect(!isnull(option));
-  expecteq(unwrap(option), 0);
+  expecteq(0, unwrap(option));
 
   Option(char) coption = Some((char)42);
   expect(!isnull(coption));
@@ -110,18 +110,12 @@ test (chain) {
 
 test (iflet) {
   Option(int) o = Some(334);
-  iflet(o)(nonnull) {
-    expecteq(334, nonnull);
-  }
-  else {
-    testing_unreachable;
-  }
+  iflet (o) (nonnull) expecteq(334, nonnull);
+  else testing_unreachable;
   o = Null(int);
-  iflet(o)(null) {
-    _ = null;
-    testing_unreachable;
-  }
-  else {
-    expect(isnull(o));
-  }
+  iflet (o) (null) {
+      _ = null;
+      testing_unreachable;
+    }
+  else expect(isnull(o));
 }
