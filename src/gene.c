@@ -21,10 +21,10 @@ overloadable void printany(double x) {
   printf("%lf", x);
 }
 overloadable void printany(char x) {
-  printf("'%c'", x);
+  printf("%c", x);
 }
 overloadable void printany(bool x) {
-  printf($if(x) "true" $else "false");
+  printf($if(x) "`true`" $else "`false`");
 }
 overloadable void printany(char *x) {
   printf("%s", x);
