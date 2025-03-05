@@ -4,6 +4,5 @@ hid
 a.out
 compile_commands.json
 .clang-tidy
-.repomixignore
-repomix-output.txt
 .build
+llmfile.txt

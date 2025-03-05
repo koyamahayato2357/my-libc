@@ -157,3 +157,18 @@ log:
 	@echo "SRCS: $(SRCS)" >> $(FP)
 	@echo "OBJS: $(OBJS)" >> $(FP)
 	@echo "DEPS: $(DEPS)" >> $(FP)
+
+LLMFILE ?= llmfile.txt
+FILES ?= README.md makefile
+DIRS ?= include src
+FILES_IN_DIRS := $(wildcard $(addsuffix /*, $(DIRS)))
+SORTED_FILES_IN_DIRS := $(sort $(notdir $(basename $(FILES_IN_DIRS))))
+REAL_PATH_FILES_IN_DIRS := $(foreach f,$(SORTED_FILES_IN_DIRS),$(shell find $(DIRS) -name $f.?))
+LIST_FILES ?= $(FILES) $(REAL_PATH_FILES_IN_DIRS)
+$(LLMFILE): $(LIST_FILES) # for the LLM to read
+	echo $^ | sed 's/ /\n/g' > $@
+	echo >> $@ # newline
+	# `head` automatically inserts the file name at the start of the file
+	head -n 9999 $^ >> $@
+
+llmfile: $(LLMFILE)
