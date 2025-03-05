@@ -1,5 +1,6 @@
 #pragma once
 #include "def.h"
+#include "macro.h"
 
 #define DEF_GEN(T) \
   overloadable void printany(T); \
@@ -12,3 +13,10 @@
 
 APPLY_PRIMITIVE_TYPES(DEF_GEN)
 APPLY_POINTER_TYPES(DEF_GEN)
+
+#define _PRINTREC1(first, ...) \
+  printany(first); \
+  __VA_OPT__(DEFER(_PRINTREC2)()(__VA_ARGS__))
+#define _PRINTREC2() _PRINTREC1
+#define PRINT(...) \
+  do { EVAL(_PRINTREC1(__VA_ARGS__)) } while (0)
