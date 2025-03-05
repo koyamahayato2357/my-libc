@@ -1,13 +1,17 @@
 #include "macro.h"
 #include "testing.h"
 
-test (macro) {
-  expecteq("0", TOSTR(BOOL(0)));
-  expecteq("1", TOSTR(BOOL(100)));
+test_table(
+  bool_macro, , (int, int),
+  {
+    {0, BOOL(0)},
+    {1, BOOL(1)},
+    {1, BOOL(8)},
 }
+)
 
 test_table(
-  if, , (int, int),
+  if_macro, , (int, int),
   {
     {0, IF(10)(0, 10)},
     {1, IF(1)(IF(1)(1, 5))},
