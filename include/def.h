@@ -1,13 +1,11 @@
 #pragma once
 #include "exproriented.h"
+#include "macro.h"
 #include <stddef.h>
 #include <stdio.h>
 #include <sys/types.h>
 
-#define CAT(a, b)    a##b
-#define TOSTR(x)     #x
-#define TO2STR(x)    TOSTR(x)
-#define HERE         __FILE__ ":" TO2STR(__LINE__)
+#define HERE         __FILE__ ":" TOSTR(__LINE__)
 #define overloadable [[clang::overloadable]]
 
 // call specified function when exiting scope
@@ -15,6 +13,8 @@
 // free when exiting scope
 #define drop     ondrop(free4drop)
 #define dropfile ondrop(fclose4drop)
+
+#define bigger(a, b) ((a) > (b) ? (a) : (b))
 
 // specified length bit integer
 #define i(n) _BitInt(n)

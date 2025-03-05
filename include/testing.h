@@ -8,7 +8,7 @@
 
 #ifdef TEST_MODE
  #include "ansiesc.h"
- #include "chore.h"
+ #include "def.h"
  #include "errcode.h"
  #include "gene.h"
  #include <stdio.h>

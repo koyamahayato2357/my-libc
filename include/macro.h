@@ -1,0 +1,34 @@
+#define _TOSTR(x) #x
+#define TOSTR(x)  _TOSTR(x)
+
+#define EMPTY()
+#define DEFER(M)    M EMPTY()
+#define OBSTRUCT(M) M DEFER(EMPTY)()
+#define EXPAND(...) __VA_ARGS__
+
+#define EVAL(...)  EVAL1(EVAL1(EVAL1(__VA_ARGS__)))
+#define EVAL1(...) EVAL2(EVAL2(EVAL2(__VA_ARGS__)))
+#define EVAL2(...) EVAL3(EVAL3(EVAL3(__VA_ARGS__)))
+#define EVAL3(...) EVAL4(EVAL4(EVAL4(__VA_ARGS__)))
+#define EVAL4(...) EXPAND(EXPAND(EXPAND(__VA_ARGS__)))
+
+#define PRIMITIVE_CAT(a, b) a##b
+#define CAT(a, b)           PRIMITIVE_CAT(a, b)
+
+#define SECOND(_1, _2, ...) _2
+#define CHECK(...)          SECOND(__VA_ARGS__, 0, )
+
+#define NOT(x) CHECK(PRIMITIVE_CAT(NOT_, x))
+#define NOT_0  ~, 1,
+
+#define COMPL(x) PRIMITIVE_CAT(COMPL_, x)
+#define COMPL_0  1
+#define COMPL_1  0
+
+#define BOOL(x) COMPL(NOT(x))
+
+#define IIF(c)        PRIMITIVE_CAT(IIF_, c)
+#define IIF_0(t, ...) __VA_ARGS__
+#define IIF_1(t, ...) t
+
+#define IF(c) IIF(BOOL(c))

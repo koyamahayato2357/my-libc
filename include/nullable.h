@@ -4,8 +4,8 @@
 #include "gene.h"
 
 #define NULLABLE_H_OPTIONT Option
-#define NULLABLE_H_FLAG    CAT(NULLABLE_H_cnt, __COUNTER__)
-#define Option(T)          CAT(NULLABLE_H_OPTIONT, T)
+#define NULLABLE_H_FLAG    PRIMITIVE_CAT(NULLABLE_H_cnt, __COUNTER__)
+#define Option(T)          PRIMITIVE_CAT(NULLABLE_H_OPTIONT, T)
 #define NULLABLE_H_CAPTURE(capture) \
   for (auto capture = unwrap_unsafe(o); NULLABLE_H_FLAG; \
        NULLABLE_H_FLAG = false) \
