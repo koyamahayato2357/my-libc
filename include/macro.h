@@ -6,11 +6,12 @@
 #define OBSTRUCT(M) M DEFER(EMPTY)()
 #define EXPAND(...) __VA_ARGS__
 
-#define EVAL(...)  EVAL1(EVAL1(EVAL1(__VA_ARGS__)))
-#define EVAL1(...) EVAL2(EVAL2(EVAL2(__VA_ARGS__)))
-#define EVAL2(...) EVAL3(EVAL3(EVAL3(__VA_ARGS__)))
-#define EVAL3(...) EVAL4(EVAL4(EVAL4(__VA_ARGS__)))
-#define EVAL4(...) EXPAND(EXPAND(EXPAND(__VA_ARGS__)))
+// max depth: 4 ^ 5 = 1024
+#define EVAL(...)  EVAL1(EVAL1(EVAL1(EVAL1(__VA_ARGS__))))
+#define EVAL1(...) EVAL2(EVAL2(EVAL2(EVAL2(__VA_ARGS__))))
+#define EVAL2(...) EVAL3(EVAL3(EVAL3(EVAL3(__VA_ARGS__))))
+#define EVAL3(...) EVAL4(EVAL4(EVAL4(EVAL4(__VA_ARGS__))))
+#define EVAL4(...) EXPAND(EXPAND(EXPAND(EXPAND(__VA_ARGS__))))
 
 #define PRIMITIVE_CAT(a, b) a##b
 #define CAT(a, b)           PRIMITIVE_CAT(a, b)
