@@ -19,13 +19,9 @@
 #define CHECK(...)          SECOND(__VA_ARGS__, 0, )
 
 #define NOT(x) CHECK(PRIMITIVE_CAT(NOT_, x))
-#define NOT_0  ~, 1,
+#define NOT_0  _, 1,
 
-#define COMPL(x) PRIMITIVE_CAT(COMPL_, x)
-#define COMPL_0  1
-#define COMPL_1  0
-
-#define BOOL(x) COMPL(NOT(x))
+#define BOOL(x) NOT(NOT(x))
 
 #define IIF(c)        PRIMITIVE_CAT(IIF_, c)
 #define IIF_0(t, ...) __VA_ARGS__
