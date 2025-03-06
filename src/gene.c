@@ -1,4 +1,6 @@
 #include "gene.h"
+#include "exproriented.h"
+#include <stdio.h>
 #include <string.h>
 #include <tgmath.h>
 
@@ -60,10 +62,10 @@ overloadable bool eq(void *x, void *y) {
     printany(x); \
     putchar('\n'); \
   }
-APPLY_PRIMITIVE_TYPES(DEF_FNS)
+TMAP(DEF_FNS)
 #define DEF_PFNS(T) \
-  overloadable void printanyln(T x) { \
+  overloadable void printanyln(T *x) { \
     printany((void *)x); \
     putchar('\n'); \
   }
-APPLY_POINTER_TYPES(DEF_PFNS)
+TMAP(DEF_PFNS)

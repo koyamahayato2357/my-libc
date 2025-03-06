@@ -1,5 +1,4 @@
 #pragma once
-#include "chore.h"
 #include "exproriented.h"
 #include "gene.h"
 
@@ -34,4 +33,4 @@
   }
 #define unwrap_or(o, default) ($if(isnull(o)) default $else unwrap_unsafe(o))
 
-APPLY_PRIMITIVE_TYPES(DEF_OPTIONAL)
+TMAP(DEF_OPTIONAL)

@@ -31,3 +31,8 @@
 #define IIF_1(t, ...) t
 
 #define IF(c) IIF(BOOL(c))
+
+#define PRIM_MAP(M, _1, ...) M(_1) __VA_OPT__(DEFER(_MAP)()(M, __VA_ARGS__))
+
+#define _MAP()   PRIM_MAP
+#define MAP(...) EVAL(PRIM_MAP(__VA_ARGS__))

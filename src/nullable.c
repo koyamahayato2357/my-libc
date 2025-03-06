@@ -34,7 +34,7 @@
     ); \
   }
 
-APPLY_PRIMITIVE_TYPES(DEF_OPTIONFN)
+MAP(DEF_OPTIONFN, TYPES)
 
 test (Some) {
   Option(size_t) option = Some((size_t)0);

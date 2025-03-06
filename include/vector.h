@@ -10,7 +10,7 @@
  */
 
 #pragma once
-#include "def.h"
+#include "gene.h"
 #include "nullable.h"
 
 #define METADATA_OFFSET 8
@@ -43,4 +43,4 @@
     _initVectorWithArray(T const *const restrict, size_t); \
   overloadable void deinitVector(Vector(T) *const restrict);
 
-APPLY_PRIMITIVE_TYPES(DEF_VEC)
+TMAP(DEF_VEC)

@@ -1,18 +1,23 @@
 #pragma once
-#include "chore.h"
 #include "def.h"
+#include <stddef.h>
 
-#define DEF_GEN(T) \
+#define overloadable [[clang::overloadable]]
+
+#define DEF_PRIM(T) \
   overloadable void printany(T); \
   overloadable void printanyln(T); \
   overloadable bool eq(T, T);
+#define DEF_GEN(T) DEF_PRIM(T) DEF_PRIM(T *)
 
-#define APPLY_PRIMITIVE_TYPES(M) M(int) M(size_t) M(double) M(char) M(bool)
-#define APPLY_POINTER_TYPES(M) \
-  M(int *) M(size_t *) M(double *) M(char *) M(bool *) M(void *)
+#define TYPES bool, char, int, size_t, long, double
 
-APPLY_PRIMITIVE_TYPES(DEF_GEN)
-APPLY_POINTER_TYPES(DEF_GEN)
+#define PRIM_TYPES void *
+
+#define TMAP(M) MAP(M, TYPES)
+
+MAP(DEF_GEN, TYPES)
+MAP(DEF_PRIM, PRIM_TYPES)
 
 #define _PRINTREC1(first, ...) \
   printany(first); \

@@ -46,7 +46,7 @@
     /* for drop */ \
     free(*vec); \
   }
-APPLY_PRIMITIVE_TYPES(DEF_VECFN)
+TMAP(DEF_VECFN)
 
 test (push) {
   Vector(char) vec = initVector(char);
