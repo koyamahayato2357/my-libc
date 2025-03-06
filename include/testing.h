@@ -23,7 +23,7 @@ extern int TEST_count;
      int col = 4 - ((int)strlen(#name) + 6) / 8; \
      for (int i = 0; i < col; i++) putchar('\t'); \
    } while (0)
- #define PRINT_FAILED(cnt) printf("\n └" ESCRED ESBLD "[NG:%d]\n" ESCLR, cnt)
+ #define PRINT_FAILED(cnt) PRINT("\n └" ESCRED ESBLD "[NG:", cnt, "]\n" ESCLR)
  #define PRINT_SUCCESS     puts("=> " ESCGRN "[OK]" ESCLR)
 
 // zig style testing syntax

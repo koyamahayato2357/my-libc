@@ -1,27 +1,20 @@
 #include "def.h"
 #include "testing.h"
-#include <stdlib.h>
 
-// for drop
-void free4drop(void *restrict const pp) {
-  free(*(void **)pp);
+test_table(
+  bool_macro, , (int, int),
+  {
+    {0, BOOL(0)},
+    {1, BOOL(1)},
+    {1, BOOL(8)},
 }
-void fclose4drop(FILE **restrict const fp) {
-  fclose(*fp);
-}
+)
 
-// greater realloc
-void *grealloc(void *restrict old, size_t sz) {
-  return realloc(old, sz) ?: p$panic(ERR_ALLOC);
+test_table(
+  if_macro, , (int, int),
+  {
+    {0, IF(10)(0, 10)},
+    {1, IF(1)(IF(1)(1, 5))},
+    {1, IF(0)(IF(1)(0, 1), 1)},
 }
-
-test (leak) { _ drop = malloc(100); }
-
-test (galloc) {
-  char *p drop = galloc(char, 100);
-  expectneq(nullptr, (void *)p);
-  // Terminate with error
-  // char *q = galloc(long long, 0xffffffffffffffff);
-  p = grealloc(p, 10'000);
-  expectneq(nullptr, (void *)p);
-}
+)

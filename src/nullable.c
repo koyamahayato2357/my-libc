@@ -1,5 +1,4 @@
 #include "nullable.h"
-#include "def.h"
 #include "testing.h"
 
 #define DEF_OPTIONFN(T) \

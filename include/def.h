@@ -1,35 +1,33 @@
 #pragma once
-#include "exproriented.h"
-#include "macro.h"
-#include <stddef.h>
-#include <stdio.h>
-#include <sys/types.h>
 
-#define HERE         __FILE__ ":" TOSTR(__LINE__)
-#define overloadable [[clang::overloadable]]
+#define _TOSTR(x) #x
+#define TOSTR(x)  _TOSTR(x)
 
-// call specified function when exiting scope
-#define ondrop(cf) [[gnu::cleanup(cf)]]
-// free when exiting scope
-#define drop     ondrop(free4drop)
-#define dropfile ondrop(fclose4drop)
+#define EMPTY()
+#define DEFER(M)    M EMPTY()
+#define OBSTRUCT(M) M DEFER(EMPTY)()
+#define EXPAND(...) __VA_ARGS__
 
-#define bigger(a, b) ((a) > (b) ? (a) : (b))
+// max depth: 4 ^ 5 = 1024
+#define EVAL(...)  EVAL1(EVAL1(EVAL1(EVAL1(__VA_ARGS__))))
+#define EVAL1(...) EVAL2(EVAL2(EVAL2(EVAL2(__VA_ARGS__))))
+#define EVAL2(...) EVAL3(EVAL3(EVAL3(EVAL3(__VA_ARGS__))))
+#define EVAL3(...) EVAL4(EVAL4(EVAL4(EVAL4(__VA_ARGS__))))
+#define EVAL4(...) EXPAND(EXPAND(EXPAND(EXPAND(__VA_ARGS__))))
 
-// specified length bit integer
-#define i(n) _BitInt(n)
-#define u(n) unsigned _BitInt(n)
+#define PRIMITIVE_CAT(a, b) a##b
+#define CAT(a, b)           PRIMITIVE_CAT(a, b)
 
-#define galloc(type, size) /* general allocator */ \
-  ((type *)malloc(sizeof(type) * size) ?: p$panic(ERR_ALLOC))
-#define _ auto CAT(_DISCARD_, __COUNTER__) [[maybe_unused]]
-#define swap(a, b) \
-  do { \
-    typeof(a) temp = a; \
-    a = b; \
-    b = temp; \
-  } while (0)
+#define SECOND(_1, _2, ...) _2
+#define CHECK(...)          SECOND(__VA_ARGS__, 0, )
 
-void free4drop(void *restrict const);
-void fclose4drop(FILE **restrict const);
-void *grealloc(void *restrict, size_t);
+#define NOT(x) CHECK(PRIMITIVE_CAT(NOT_, x))
+#define NOT_0  _, 1,
+
+#define BOOL(x) NOT(NOT(x))
+
+#define IIF(c)        PRIMITIVE_CAT(IIF_, c)
+#define IIF_0(t, ...) __VA_ARGS__
+#define IIF_1(t, ...) t
+
+#define IF(c) IIF(BOOL(c))

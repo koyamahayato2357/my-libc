@@ -1,6 +1,6 @@
 #pragma once
+#include "chore.h"
 #include "def.h"
-#include "macro.h"
 
 #define DEF_GEN(T) \
   overloadable void printany(T); \
