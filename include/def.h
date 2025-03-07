@@ -18,6 +18,12 @@
 #define PRIMITIVE_CAT(a, b) a##b
 #define CAT(a, b)           PRIMITIVE_CAT(a, b)
 
+#define PRIM_CAR(_1, ...) _1
+#define PRIM_CDR(_1, ...) __VA_ARGS__
+
+#define CAR(...) PRIM_CAR(__VA_ARGS__)
+#define CDR(...) PRIM_CDR(__VA_ARGS__)
+
 #define SECOND(_1, _2, ...) _2
 #define CHECK(...)          SECOND(__VA_ARGS__, 0, )
 
