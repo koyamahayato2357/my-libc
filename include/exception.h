@@ -2,7 +2,7 @@
 #include "errcode.h"
 #include <setjmp.h>
 
-#define MAX_NEST_DEPTH 8
+constexpr size_t MAX_NEST_DEPTH = 8;
 
 extern jmp_buf EXCEPTION_H_jb[MAX_NEST_DEPTH];
 extern int EXCEPTION_H_errcode;

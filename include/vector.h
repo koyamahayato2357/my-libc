@@ -13,8 +13,8 @@
 #include "gene.h"
 #include "nullable.h"
 
-#define METADATA_OFFSET 8
-#define DEFAULT_VECCAP  32
+constexpr size_t METADATA_OFFSET = 8;
+constexpr size_t DEFAULT_VECCAP = 32;
 #define Vector(T)       T *
 #define initVector(T) \
   ({ \
