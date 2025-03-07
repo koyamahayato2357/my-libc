@@ -4,7 +4,8 @@ To keep track of interesting macros I see on the internet
 - `ansiesc`: self made
 - `arena`: inspired by zig
 - `benchmarking`: self made
-- `def`: self made
+- `chore`: self made
+- `def`: from blog posts
 - `errcode`: self made
 - `exception`: commonly seen implementation, with help of gpt (EXCEPTION_H_TRY)
 - `exproriented`: self made
