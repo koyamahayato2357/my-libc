@@ -34,7 +34,7 @@
     ); \
   }
 
-MAP(DEF_OPTIONFN, TYPES)
+TMAP(DEF_OPTIONFN)
 
 test (Some) {
   Option(size_t) option = Some((size_t)0);
