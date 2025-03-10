@@ -1,11 +1,13 @@
-# TYPE = test                      Enables tests
-# TYPE = bench                     Enables benchmarks
-# TYPE = asm                       Generates assembly
-# OPTLEVEL = [0-3|g]               Sets optimization/debug
-# LOGLEVEL = [1| ]                 Enables logging
-# ASAN = [0|address|alignment|...] Enables specified sanitizer
+NPROC != nproc
+MAKEFLAGS += -j$(NPROC)
+MAKEFLAGS += -r -R
 
-MAKEFLAGS += -j$(shell nproc)
+PHONY_TARGETS != grep -o "^[0-9a-z-]\\+:" $(MAKEFILE_LIST) | sed -e "s/://"
+.PHONY: $(PHONY_TARGETS)
+
+define ERROR_INVALID_VALUE
+  $(error invalid value for $$($1): expected one of $(or $2,[yn]) but got $($1))
+endef
 
 # Alias
 ifdef OL
@@ -15,24 +17,27 @@ ifdef LL
   LOGLEVEL ?= $(LL)
 endif
 
-OPTLEVEL ?= g
+OPTLEVEL ?= g ## optimization level [0-3|g] (default: g)
 
-# if CC is not defined
-ifeq ($(origin $(CC)),undefined)
-  CC := $(if $(shell command -v clang-20),clang-20,clang)
-endif
-# e.g.) disable ccache
-# $ make CCACHE=
-CCACHE ?= $(shell command -v ccache)
-ifneq ($(CCACHE),) # if CCACHE is enabled
+CLANG21 != command -v clang-21
+CLANG20 != command -v clang-20
+CLANG19 != command -v clang-19
+
+CC := $(or $(CLANG21),$(CLANG20),$(CLANG19),$(error CC not found))
+
+DISABLE_CCACHE ?= n ## disable ccache [yn] (default: n)
+ifeq ($(strip $(DISABLE_CCACHE)),n)
+  CCACHE != command -v ccache
   CC := $(CCACHE) $(CC)
+else ifeq ($(strip $(DISABLE_CCACHE)),y)
+else
+  $(call ERROR_INVALID_VALUE,DISABLE_CCACHE)
 endif
 
-PROJECT_NAME := $(notdir $(shell pwd))
-SRCDIR := src
+PROJECT_NAME := $(notdir $(CURDIR))
+CDIR := src
 INCDIR := include
 BUILDDIR := .build
-PREFIX ?= /usr/local
 
 # compiler flags
 CFLAGS := -std=c2y -I$(INCDIR) -Wtautological-compare -Wextra -Wall \
@@ -50,17 +55,26 @@ OPTLDFLAGS := -flto=full -fwhole-program-vtables -fvirtual-function-elimination 
               -fuse-ld=lld -Wl,--gc-sections -Wl,--icf=all -s
 DEBUGFLAGS := -g
 ASMFLAGS := -S -masm=intel
-DEPFLAGS = -MMD -MP -MT $(TARGETDIR)/$*.o -MF $(DEPDIR)/$*.d
+DEPFLAGS = -MM -MP -MT $(OUTDIR)/$*.o -MF $(OUTDIR)/$*.d
 
 # Enables macro in the source
-CFLAGS += -DVERSION=\"$(shell git describe --tags --always 2>/dev/null || echo "unknown")\"
-CFLAGS += -DDATE=\"$(shell date -I)\"
+VERSION != git describe --tags --always 2>/dev/null || echo "unknown"
+DATE != date -I
+CFLAGS += -DVERSION=\"$(VERSION)\"
+CFLAGS += -DDATE=\"$(DATE)\"
 CFLAGS += -DLOGLEVEL=$(LOGLEVEL)
 CFLAGS += -DTEST_MODE
 
 ifdef ASAN
   CFLAGS += -fsanitize=$(ASAN)
   LDFLAGS += -fsanitize=$(ASAN)
+endif
+
+ifeq ($(MAKECMDGOALS),coverage)
+  CFLAGS += -fprofile-arcs -ftest-coverage
+  LDFLAGS += --coverage
+  TYPE := test
+  OPTLEVEL := 0
 endif
 
 ifeq ($(OPTLEVEL),g)
@@ -76,44 +90,62 @@ ifdef TEST_FILTER
 endif
 
 # generate output path
-GITBRANCH := $(shell git branch --show-current 2>/dev/null)
+GITBRANCH != git branch --show-current 2>/dev/null
 SEED = $(CC)$(EXTRAFLAGS)$(CFLAGS)$(LDFLAGS)$(GITBRANCH)
-HASH := $(shell echo '$(SEED)' | md5sum | cut -d' ' -f1)
+HASH != echo '$(SEED)' | md5sum | cut -d' ' -f1
 OUTDIR := $(BUILDDIR)/$(HASH)
-TARGETDIR := $(OUTDIR)/target
-DEPDIR := $(OUTDIR)/dep
 
-TARGET := $(TARGETDIR)/$(PROJECT_NAME)
+TARGET := $(OUTDIR)/$(PROJECT_NAME)
+
+EMIT_LLVM ?= n ## use llvmIR instead of asm [yn] (default: n)
+ifeq ($(strip $(EMIT_LLVM)),y)
+  ASMFLAGS += -emit-llvm
+  ASMEXT := ll
+else ifeq ($(strip $(EMIT_LLVM)),n)
+  ASMEXT := s
+else
+  $(call ERROR_INVALID_VALUE,EMIT_LLVM)
+endif
 
 # source files
-SRCS = $(wildcard $(SRCDIR)/*.c)
-OBJS = $(patsubst $(SRCDIR)/%.c,$(TARGETDIR)/%.o,$(SRCS))
-DEPS = $(patsubst $(SRCDIR)/%.c,$(DEPDIR)/%.d,$(SRCS))
+SRCS := $(wildcard $(CDIR)/*.c)
+OBJS := $(patsubst $(CDIR)/%.c,$(OUTDIR)/%.o,$(SRCS))
+DEPS := $(OBJS:.o=.d)
+ASMS := $(OBJS:.o=.$(ASMEXT))
 
-ifeq ($(MAKECMDGOALS),build)
-	-include $($(DEPDIR)/%.d DEPS)
-else ifeq ($(MAKECMDGOALS),run)
-	-include $(DEPS)
+# e.g.)
+# $ make asm OL=3
+# $ # edit asm files...
+# $ make BUILD_FROM_ASM=y OL=3
+BUILD_FROM_ASM ?= n ## use asm instead of c files [yn] (default: n)
+ifeq ($(strip $(BUILD_FROM_ASM)),y)
+  SRCDIR := $(OUTDIR)
+  SRCEXT := $(ASMEXT)
+  CFLAGS =
+else ifeq ($(strip $(BUILD_FROM_ASM)),n)
+  SRCDIR := $(CDIR)
+  SRCEXT := c
+else
+  $(call ERROR_INVALID_VALUE,BUILD_FROM_ASM)
+endif
+
+ifneq ($(filter $(TARGET) run, $(MAKECMDGOALS)),)
+  include $(wildcard $(DEPS))
 endif
 
 # rules
-.PHONY: run analyze clean-all clean doc lint fmt log
 .DEFAULT_GOAL := run
-
-build: $(TARGET)
 
 # link
 $(TARGET): $(OBJS)
 	$(CC) $(LDFLAGS) $(EXTRALDFLAGS) $^ -o $@
 
 # compile
-$(TARGETDIR)/%.o: $(SRCDIR)/%.c | $(TARGETDIR)/ $(DEPDIR)/
-	$(CC) $< -I$(INCDIR) $(CFLAGS) $(EXTRAFLAGS) $(DEPFLAGS) -c -o $@
+$(OBJS): $(OUTDIR)/%.o: $(SRCDIR)/%.$(SRCEXT) $(OUTDIR)/%.d
+	$(CC) $< $(CFLAGS) $(EXTRAFLAGS) -c -o $@
 
-$(DEPS):
-
-%/:
-	mkdir -p $@
+$(DEPS): $(OUTDIR)/%.d: $(SRCDIR)/%.c | $(OUTDIR)/
+	$(CC) $< $(CFLAGS) $(EXTRAFLAGS) $(DEPFLAGS) -o $@
 
 # e.g.) run with valgrind
 # make run RUNNER=valgrind
@@ -126,26 +158,32 @@ run: $(TARGET)
 run-%: $(TARGET)
 	$* $<
 
-clean-all:
-	rm -rf $(BUILDDIR)
+asm: $(ASMS) ## generate asm files
+
+$(ASMS): $(OUTDIR)/%.$(ASMEXT): $(SRCDIR)/%.c | $(OUTDIR)/
+	$(CC) $< $(ASMFLAGS) $(CFLAGS) $(EXTRAFLAGS) -o $@
+
+clean-all: ; rm -rf $(BUILDDIR)
 
 # e.g.) remove test build for opt level 3
 # make clean OPTLEVEL=3
 clean:
+ifneq ($(OUTDIR),)
 	rm -rf $(OUTDIR)
+endif
 
 # generate doc
 doc: doc/Doxyfile
 	doxygen $<
 
-fmt:
-	clang-format -i $(SRCS) $(INCDIR)/*.h
+doc/Doxyfile: ; doxygen -g $@
+
+fmt: ; clang-format -i $(SRCS) $(INCDIR)/*.h
 
 lint:
 	clang-tidy $(SRCS) -- $(CFLAGS)
-
-%.s: %.c
-	$(CC) $< $(ASMFLAGS) $(CFLAGS) $(EXTRAFLAGS) $(DEPFLAGS) -o $@
+	cppcheck $(SRCS) --enable=all --suppress=missingIncludeSystem -I$(INCDIR)
+	scan-build $(MAKE)
 
 FP ?= /dev/stdout
 log:
@@ -156,6 +194,8 @@ log:
 	@echo "SRCS: $(SRCS)" >> $(FP)
 	@echo "OBJS: $(OBJS)" >> $(FP)
 	@echo "DEPS: $(DEPS)" >> $(FP)
+
+### llmfile
 
 LLMFILE ?= llmfile.txt
 FILES ?= README.md makefile
@@ -171,3 +211,35 @@ $(LLMFILE): $(LIST_FILES) # for the LLM to read
 	head -n 9999 $^ >> $@
 
 llmfile: $(LLMFILE)
+
+### compiledb
+
+compile_commands.json: $(SRCS)
+	$(MAKE) clean
+	bear -- $(MAKE)
+
+compiledb: compile_commands.json ## for lsp
+
+### coverage
+
+GCOV_TOOL ?= $(CURDIR)/tool/llvm-cov.sh
+COVDIR ?= coverage-report
+
+$(GCOV_TOOL): | $(dir $(GCOV_TOOL))
+	echo -e '#!/bin/sh\nexec llvm-cov gcov "$$@"' > $@
+	chmod +x $@
+
+GCDA_FILES := $(OBJS:.o=.gcda)
+$(GCDA_FILES): run
+
+%/$(COVDIR).info: $(GCOV_TOOL) $(GCDA_FILES)
+	lcov -d $* -c -o $@ --gcov-tool $<
+
+%/$(COVDIR): %/$(COVDIR).info
+	genhtml $< -o $@
+
+BROWSER ?= w3m # w3m is sufficient for viewing
+coverage: $(OUTDIR)/$(COVDIR) ## report test coverage
+	$(BROWSER) $</index.html
+
+%/: ; mkdir -p $@
