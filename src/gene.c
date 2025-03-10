@@ -47,6 +47,9 @@ void printany(int x) {
 void printany(size_t x) {
   printf("%zu", x);
 }
+void printany(long x) {
+  printf("%ld", x);
+}
 void printany(double x) {
   printf("%lf", x);
 }
@@ -69,6 +72,7 @@ void printany(void *x) {
   }
 CMP_DIRECTLY(int)
 CMP_DIRECTLY(size_t)
+CMP_DIRECTLY(long)
 CMP_DIRECTLY(char)
 CMP_DIRECTLY(bool)
 CMP_DIRECTLY(void *)
